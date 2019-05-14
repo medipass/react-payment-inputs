@@ -1,7 +1,7 @@
 {
-  "name": "use-payment-inputs",
-  "version": "1.0.0",
-  "description": "use-payment-inputs React component",
+  "name": "react-payment-inputs",
+  "version": "0.0.0",
+  "description": "A React Hook & Container to help with payment card input fields.",
   "main": "lib/index.js",
   "module": "es/index.js",
   "files": [
@@ -12,18 +12,23 @@
   ],
   "scripts": {
     "build": "nwb build-react-component",
+    "build:demo": "nwb build-demo",
+    "start:demo": "nwb serve-react-demo",
     "clean": "nwb clean-module && nwb clean-demo",
-    "start": "nwb serve-react-demo",
-    "test": "nwb test-react",
-    "test:coverage": "nwb test-react --coverage",
-    "test:watch": "nwb test-react --server"
+    "prepublishOnly": "npm run build",
+    "lint": "eslint ./src"
   },
   "dependencies": {},
   "peerDependencies": {
-    "react": "16.x"
+    "react": ">=16.8.0"
   },
   "devDependencies": {
-    "nwb": "0.21.x",
+    "@medipass/eslint-config-react-medipass": "8.4.0",
+    "babel-eslint": "10.0.1",
+    "eslint": "5.16.0",
+    "eslint-plugin-import": "2.17.2",
+    "eslint-plugin-prettier": "3.0.1",
+    "nwb": "0.23.0",
     "react": "16.8.6",
     "react-dom": "16.8.6"
   },
