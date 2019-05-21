@@ -4,6 +4,7 @@
   "description": "A React Hook & Container to help with payment card input fields.",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "unpkg": "umd/react-payment-inputs.min.js",
   "files": [
     "css",
     "es",
@@ -11,30 +12,41 @@
     "umd"
   ],
   "scripts": {
-    "build": "nwb build-react-component",
-    "build:demo": "nwb build-demo",
-    "start:demo": "nwb serve-react-demo",
+    "build": "rollup -c",
     "create-proxies": "node scripts/create-proxies.js",
     "remove-proxies": "node scripts/remove-proxies.js",
-    "clean": "nwb clean-module && yarn remove-proxies && nwb clean-demo",
+    "clean": "rimraf es/ lib/ umd/ && yarn remove-proxies",
     "prepublishOnly": "yarn create-proxies && yarn build",
     "postpublish": "yarn clean",
     "lint": "eslint ./src"
   },
-  "dependencies": {},
+  "dependencies": {
+  },
   "peerDependencies": {
-    "react": ">=16.8.0"
+    "react": ">=16.8.0",
+    "styled-components": ">=4.0.0"
   },
   "devDependencies": {
+    "@babel/core": "7.4.4",
+    "@babel/plugin-proposal-class-properties": "7.4.4",
+    "@babel/plugin-proposal-export-namespace-from": "7.2.0",
+    "@babel/plugin-proposal-object-rest-spread": "7.4.4",
+    "@babel/plugin-syntax-dynamic-import": "7.2.0",
+    "@babel/preset-env": "7.4.4",
+    "@babel/preset-react": "7.0.0",
     "@medipass/eslint-config-react-medipass": "8.4.1",
     "babel-eslint": "10.0.1",
     "eslint": "5.16.0",
     "eslint-plugin-import": "2.17.2",
     "eslint-plugin-prettier": "3.0.1",
     "fannypack": "4.19.20",
-    "nwb": "0.23.0",
-    "react": "16.8.6",
-    "react-dom": "16.8.6"
+    "rimraf": "2.6.3",
+    "rollup": "1.12.3",
+    "rollup-plugin-babel": "4.3.2",
+    "rollup-plugin-commonjs": "10.0.0",
+    "rollup-plugin-node-resolve": "5.0.0",
+    "rollup-plugin-proxy-directories": "1.2.0",
+    "rollup-plugin-terser": "4.0.4"
   },
   "author": "",
   "homepage": "",

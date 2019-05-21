@@ -1,18 +1,15 @@
 import React from 'react';
 
-import * as utils from './utils';
+import utils from './utils';
 
 /**
  * TODO:
- *  - Migrate from nwb to Rollup
- *  - Migrate from CSS stylesheet to Linara
- *  - onTouched hook
- *  - wrapper with default styling
+ *  - styling for ZIP
  *  - add ability to modify styling (class & style props)
- *  - error i18n
+ *  - doco
  */
 
-export default function usePaymentCard({ onError } = {}) {
+export default function usePaymentCard({ errorMessages, onBlur, onChange, onError, onTouch } = {}) {
   const cardNumberField = React.useRef();
   const expiryDateField = React.useRef();
   const cvcField = React.useRef();
@@ -35,24 +32,37 @@ export default function usePaymentCard({ onError } = {}) {
   const [error, setError] = React.useState();
   const [cardType, setCardType] = React.useState();
 
-  const setInputError = React.useCallback(
-    (input, error) => {
-      setErroredInputs(erroredInputs => {
-        const newErroredInputs = { ...erroredInputs, [input]: error };
-        onError && onError({ [input]: error }, newErroredInputs);
-        return newErroredInputs;
-      });
+  const setInputError = React.useCallback((input, error) => {
+    setErroredInputs(erroredInputs => {
+      if (erroredInputs[input] === error) return erroredInputs;
+      let newError = error;
+      const newErroredInputs = { ...erroredInputs, [input]: error };
       if (error) {
         setError(error);
+      } else {
+        newError = Object.values(newErroredInputs).find(Boolean);
+        setError(newError);
       }
-    },
-    [onError]
-  );
+      onError && onError(newError, newErroredInputs);
+      return newErroredInputs;
+    });
+  }, []); // eslint-disable-line
 
-  const setInputTouched = React.useCallback(input => {
-    setIsTouched(true);
-    setTouchedInputs(touchedInputs => ({ ...touchedInputs, [input]: true }));
-  }, []);
+  const setInputTouched = React.useCallback((input, value) => {
+    requestAnimationFrame(() => {
+      if (document.activeElement.tagName !== 'INPUT') {
+        setIsTouched(true);
+      } else if (value === false) {
+        setIsTouched(false);
+      }
+    });
+    setTouchedInputs(touchedInputs => {
+      if (touchedInputs[input] === value) return touchedInputs;
+      const newTouchedInputs = { ...touchedInputs, [input]: value };
+      onTouch && onTouch({ [input]: value }, newTouchedInputs);
+      return newTouchedInputs;
+    });
+  }, []); // eslint-disable-line
   /** ====== END: META STUFF ====== */
 
   /** ====== START: CARD NUMBER STUFF ====== */
@@ -60,10 +70,11 @@ export default function usePaymentCard({ onError } = {}) {
     (props = {}) => {
       return e => {
         props.onBlur && props.onBlur(e);
-        setInputTouched('cardNumber');
+        onBlur && onBlur(e);
+        setInputTouched('cardNumber', true);
       };
     },
-    [setInputTouched]
+    [onBlur, setInputTouched]
   );
 
   const handleChangeCardNumber = React.useCallback(
@@ -71,23 +82,36 @@ export default function usePaymentCard({ onError } = {}) {
       return e => {
         const formattedCardNumber = e.target.value || '';
         const cardNumber = formattedCardNumber.replace(/\s/g, '');
+        let cursorPosition = cardNumberField.current.selectionStart;
 
         const cardType = utils.cardTypes.getCardTypeByValue(cardNumber);
         setCardType(cardType);
 
+        setInputTouched('cardNumber', false);
+
         props.onChange && props.onChange(e);
+        onChange && onChange(e);
 
         // @ts-ignore
         cardNumberField.current.value = utils.formatter.formatCardNumber(cardNumber);
 
-        const cardNumberError = utils.validator.getCardNumberError(cardNumber);
+        // Due to the card number formatting, the selection cursor will fall to the end of
+        // the input field. Here, we want to reposition the cursor to the correct place.
+        requestAnimationFrame(() => {
+          if (cardNumberField.current.value[cursorPosition - 1] === ' ') {
+            cursorPosition = cursorPosition + 1;
+          }
+          cardNumberField.current.setSelectionRange(cursorPosition, cursorPosition);
+        });
+
+        const cardNumberError = utils.validator.getCardNumberError(cardNumber, { errorMessages });
         if (!cardNumberError) {
           expiryDateField.current && expiryDateField.current.focus();
         }
         setInputError('cardNumber', cardNumberError);
       };
     },
-    [setInputError]
+    [errorMessages, onChange, setInputError, setInputTouched]
   );
 
   const handleKeyPressCardNumber = React.useCallback((props = {}) => {
@@ -114,6 +138,7 @@ export default function usePaymentCard({ onError } = {}) {
       placeholder: 'Card number',
       type: 'tel',
       ref: cardNumberField,
+      ...props,
       onBlur: handleBlurCardNumber(props),
       onChange: handleChangeCardNumber(props),
       onKeyPress: handleKeyPressCardNumber(props)
@@ -127,10 +152,11 @@ export default function usePaymentCard({ onError } = {}) {
     (props = {}) => {
       return e => {
         props.onBlur && props.onBlur(e);
-        setInputTouched('expiryDate');
+        onBlur && onBlur(e);
+        setInputTouched('expiryDate', true);
       };
     },
-    [setInputTouched]
+    [onBlur, setInputTouched]
   );
 
   const handleChangeExpiryDate = React.useCallback(
@@ -138,18 +164,21 @@ export default function usePaymentCard({ onError } = {}) {
       return e => {
         const expiryDate = e.target.value;
 
+        setInputTouched('expiryDate', false);
+
         props.onChange && props.onChange(e);
+        onChange && onChange(e);
 
         expiryDateField.current.value = utils.formatter.formatExpiry(e);
 
-        const expiryDateError = utils.validator.getExpiryDateError(expiryDate);
+        const expiryDateError = utils.validator.getExpiryDateError(expiryDate, { errorMessages });
         if (!expiryDateError) {
           cvcField.current && cvcField.current.focus();
         }
         setInputError('expiryDate', expiryDateError);
       };
     },
-    [setInputError]
+    [errorMessages, onChange, setInputError, setInputTouched]
   );
 
   const handleKeyDownExpiryDate = React.useCallback(
@@ -189,6 +218,7 @@ export default function usePaymentCard({ onError } = {}) {
       placeholder: 'MM/YY',
       type: 'tel',
       ref: expiryDateField,
+      ...props,
       onBlur: handleBlurExpiryDate(props),
       onChange: handleChangeExpiryDate(props),
       onKeyDown: handleKeyDownExpiryDate(props),
@@ -203,10 +233,11 @@ export default function usePaymentCard({ onError } = {}) {
     (props = {}) => {
       return e => {
         props.onBlur && props.onBlur(e);
-        setInputTouched('cvc');
+        onBlur && onBlur(e);
+        setInputTouched('cvc', true);
       };
     },
-    [setInputTouched]
+    [onBlur, setInputTouched]
   );
 
   const handleChangeCVC = React.useCallback(
@@ -214,16 +245,19 @@ export default function usePaymentCard({ onError } = {}) {
       return e => {
         const cvc = e.target.value;
 
-        props.onChange && props.onChange(e);
+        setInputTouched('cvc', false);
 
-        const cvcError = utils.validator.getCVCError(cvc, { cardType });
+        props.onChange && props.onChange(e);
+        onChange && onChange(e);
+
+        const cvcError = utils.validator.getCVCError(cvc, { cardType, errorMessages });
         if (!cvcError) {
           zipField.current && zipField.current.focus();
         }
         setInputError('cvc', cvcError);
       };
     },
-    [setInputError]
+    [errorMessages, onChange, setInputError, setInputTouched]
   );
 
   const handleKeyDownCVC = React.useCallback(
@@ -266,6 +300,7 @@ export default function usePaymentCard({ onError } = {}) {
       placeholder: cardType ? cardType.code.name : 'CVC',
       type: 'tel',
       ref: cvcField,
+      ...props,
       onBlur: handleBlurCVC(props),
       onChange: handleChangeCVC(props, { cardType }),
       onKeyDown: handleKeyDownCVC(props),
@@ -280,10 +315,11 @@ export default function usePaymentCard({ onError } = {}) {
     (props = {}) => {
       return e => {
         props.onBlur && props.onBlur(e);
-        setInputTouched('zip');
+        onBlur && onBlur(e);
+        setInputTouched('zip', true);
       };
     },
-    [setInputTouched]
+    [onBlur, setInputTouched]
   );
 
   const handleChangeZIP = React.useCallback(
@@ -291,13 +327,16 @@ export default function usePaymentCard({ onError } = {}) {
       return e => {
         const zip = e.target.value;
 
-        props.onChange && props.onChange(e);
+        setInputTouched('zip', false);
 
-        const zipError = utils.validator.getZIPError(zip);
+        props.onChange && props.onChange(e);
+        onChange && onChange(e);
+
+        const zipError = utils.validator.getZIPError(zip, { errorMessages });
         setInputError('zip', zipError);
       };
     },
-    [setInputError]
+    [errorMessages, onChange, setInputError, setInputTouched]
   );
 
   const handleKeyDownZIP = React.useCallback(
@@ -331,6 +370,7 @@ export default function usePaymentCard({ onError } = {}) {
       placeholder: 'ZIP',
       type: 'tel',
       ref: zipField,
+      ...props,
       onBlur: handleBlurZIP(props),
       onChange: handleChangeZIP(props),
       onKeyDown: handleKeyDownZIP(props),
@@ -348,7 +388,8 @@ export default function usePaymentCard({ onError } = {}) {
         children: images[cardType ? cardType.type : 'placeholder'] || images.placeholder,
         width: '1.5em',
         height: '1em',
-        viewBox: '0 0 24 16'
+        viewBox: '0 0 24 16',
+        ...props
       };
     },
     [cardType]
@@ -358,23 +399,23 @@ export default function usePaymentCard({ onError } = {}) {
   React.useEffect(
     () => {
       if (zipField.current) {
-        const zipError = utils.validator.getZIPError(zipField.current.value);
+        const zipError = utils.validator.getZIPError(zipField.current.value, { errorMessages });
         setInputError('zip', zipError);
       }
       if (cvcField.current) {
-        const cvcError = utils.validator.getCVCError(cvcField.current.value);
+        const cvcError = utils.validator.getCVCError(cvcField.current.value, { errorMessages });
         setInputError('cvc', cvcError);
       }
       if (expiryDateField.current) {
-        const expiryDateError = utils.validator.getExpiryDateError(expiryDateField.current.value);
+        const expiryDateError = utils.validator.getExpiryDateError(expiryDateField.current.value, { errorMessages });
         setInputError('expiryDate', expiryDateError);
       }
       if (cardNumberField.current) {
-        const cardNumberError = utils.validator.getCardNumberError(cardNumberField.current.value);
+        const cardNumberError = utils.validator.getCardNumberError(cardNumberField.current.value, { errorMessages });
         setInputError('cardNumber', cardNumberError);
       }
     },
-    [setInputError]
+    [errorMessages, setInputError]
   );
 
   React.useEffect(() => {
@@ -397,6 +438,10 @@ export default function usePaymentCard({ onError } = {}) {
     cardNumberProps,
     expiryDateProps,
     cvcProps,
-    zipProps
+    zipProps,
+    wrapperProps: {
+      error,
+      isTouched
+    }
   };
 }

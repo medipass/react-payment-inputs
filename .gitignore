@@ -5,3 +5,8 @@
 /node_modules
 /umd
 npm-debug.log*
+/utils/
+/use-payment-inputs/
+/images/
+/PaymentInputsWrapper/
+/PaymentInputsContainer/

@@ -5,11 +5,11 @@ import { usePaymentInputs, PaymentInputsContainer, PaymentInputsWrapper } from '
 import images from '../../src/images';
 
 function Demo() {
-  const { cardImageProps, cardNumberProps, expiryDateProps, cvcProps } = usePaymentInputs();
+  const { cardImageProps, cardNumberProps, expiryDateProps, cvcProps, wrapperProps } = usePaymentInputs();
   return (
     <React.Fragment>
       {/* Using the hook */}
-      <PaymentInputsWrapper>
+      <PaymentInputsWrapper {...wrapperProps}>
         <svg {...cardImageProps({ images })} />
         <input {...cardNumberProps()} />
         <input {...expiryDateProps()} />

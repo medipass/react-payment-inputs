@@ -1,7 +1,7 @@
-import * as utils from './index';
+import * as cardTypes from './card-types';
 
 export const formatCardNumber = cardNumber => {
-  const cardType = utils.cardTypes.getCardTypeByValue(cardNumber);
+  const cardType = cardTypes.getCardTypeByValue(cardNumber);
 
   if (!cardType) return (cardNumber.match(/\d+/g) || []).join('');
 
