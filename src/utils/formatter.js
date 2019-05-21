@@ -22,9 +22,7 @@ export const formatCardNumber = cardNumber => {
 
   return cardNumber;
 };
-// export const formatCVC = cvc => {
-//   return (cvc.match(/\d+/g) || []).join('');
-// };
+
 export const formatExpiry = event => {
   const eventData = event.nativeEvent && event.nativeEvent.data;
   const prevExpiry = event.target.value.split(' / ').join('/');

@@ -14,8 +14,11 @@
     "build": "nwb build-react-component",
     "build:demo": "nwb build-demo",
     "start:demo": "nwb serve-react-demo",
-    "clean": "nwb clean-module && nwb clean-demo",
-    "prepublishOnly": "npm run build",
+    "create-proxies": "node scripts/create-proxies.js",
+    "remove-proxies": "node scripts/remove-proxies.js",
+    "clean": "nwb clean-module && yarn remove-proxies && nwb clean-demo",
+    "prepublishOnly": "yarn create-proxies && yarn build",
+    "postpublish": "yarn clean",
     "lint": "eslint ./src"
   },
   "dependencies": {},
@@ -23,11 +26,12 @@
     "react": ">=16.8.0"
   },
   "devDependencies": {
-    "@medipass/eslint-config-react-medipass": "8.4.0",
+    "@medipass/eslint-config-react-medipass": "8.4.1",
     "babel-eslint": "10.0.1",
     "eslint": "5.16.0",
     "eslint-plugin-import": "2.17.2",
     "eslint-plugin-prettier": "3.0.1",
+    "fannypack": "4.19.20",
     "nwb": "0.23.0",
     "react": "16.8.6",
     "react-dom": "16.8.6"

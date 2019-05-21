@@ -28,7 +28,7 @@ export const CARD_TYPES = [
   },
   {
     displayName: 'American Express',
-    type: 'american-express',
+    type: 'amex',
     format: /(\d{1,4})(\d{1,6})?(\d{1,5})?/,
     startPattern: /^3[47]/,
     gaps: [4, 10],
@@ -40,7 +40,7 @@ export const CARD_TYPES = [
   },
   {
     displayName: 'Diners Club',
-    type: 'diners-club',
+    type: 'dinersclub',
     format: DEFAULT_CARD_FORMAT,
     startPattern: /^(36|38|30[0-5])/,
     gaps: [4, 10],

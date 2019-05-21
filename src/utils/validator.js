@@ -60,7 +60,7 @@ export const getExpiryDateError = expiryDate => {
   if (!expiryDate) {
     return EMPTY_EXPIRY_DATE;
   }
-  const rawExpiryDate = expiryDate.replace(' / ', '');
+  const rawExpiryDate = expiryDate.replace(' / ', '').replace('/', '');
   if (rawExpiryDate.length === 4) {
     const month = rawExpiryDate.slice(0, 2);
     const year = `20${rawExpiryDate.slice(2, 4)}`;
@@ -77,9 +77,9 @@ export const getExpiryDateError = expiryDate => {
   }
   return INVALID_EXPIRY_DATE;
 };
-export const getCVCError = (expiryDate, { cardType }) => {
+export const getCVCError = (expiryDate, { cardType } = {}) => {
   if (!expiryDate) {
-    return EMPTY_EXPIRY_DATE;
+    return EMPTY_CVC;
   }
   if (cardType && expiryDate.length !== cardType.code.length) {
     return INVALID_CVC;

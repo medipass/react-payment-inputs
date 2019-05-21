@@ -8,5 +8,8 @@ module.exports = {
         react: 'React'
       }
     }
+  },
+  webpack: {
+    extractCSS: false
   }
-}
+};

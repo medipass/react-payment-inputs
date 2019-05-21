@@ -1,7 +1,6 @@
-import React from 'react';
 import usePaymentInputs from './use-payment-inputs';
 
-export default function PaymentInputs(props) {
+export default function PaymentInputsContainer(props) {
   const paymentInputs = usePaymentInputs(props);
   return props.children(paymentInputs);
 }

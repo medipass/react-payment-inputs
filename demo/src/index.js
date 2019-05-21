@@ -1,18 +1,20 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import { usePaymentInputs, PaymentInputsContainer } from '../../src';
+import { usePaymentInputs, PaymentInputsContainer, PaymentInputsWrapper } from '../../src';
+import images from '../../src/images';
 
 function Demo() {
-  const { cardNumberProps, expiryDateProps, cvcProps } = usePaymentInputs();
+  const { cardImageProps, cardNumberProps, expiryDateProps, cvcProps } = usePaymentInputs();
   return (
     <React.Fragment>
       {/* Using the hook */}
-      <div>
+      <PaymentInputsWrapper>
+        <svg {...cardImageProps({ images })} />
         <input {...cardNumberProps()} />
         <input {...expiryDateProps()} />
         <input {...cvcProps()} />
-      </div>
+      </PaymentInputsWrapper>
 
       {/* Using render props */}
       <PaymentInputsContainer>
