@@ -1,4 +1,4 @@
-import * as cardTypes from './card-types';
+import * as cardTypes from './cardTypes';
 
 const MONTH_REGEX = /(0[1-9]|1[0-2])/;
 
@@ -37,7 +37,7 @@ export const validateLuhn = cardNumber => {
     0
   );
 };
-export const getCardNumberError = (cardNumber, { errorMessages } = {}) => {
+export const getCardNumberError = (cardNumber, { errorMessages = {} } = {}) => {
   if (!cardNumber) {
     return errorMessages.emptyCardNumber || EMPTY_CARD_NUMBER;
   }
@@ -56,7 +56,7 @@ export const getCardNumberError = (cardNumber, { errorMessages } = {}) => {
 
   return errorMessages.invalidCardNumber || INVALID_CARD_NUMBER;
 };
-export const getExpiryDateError = (expiryDate, { errorMessages } = {}) => {
+export const getExpiryDateError = (expiryDate, { errorMessages = {} } = {}) => {
   if (!expiryDate) {
     return errorMessages.emptyExpiryDate || EMPTY_EXPIRY_DATE;
   }
@@ -77,7 +77,7 @@ export const getExpiryDateError = (expiryDate, { errorMessages } = {}) => {
   }
   return errorMessages.invalidExpiryDate || INVALID_EXPIRY_DATE;
 };
-export const getCVCError = (expiryDate, { cardType, errorMessages } = {}) => {
+export const getCVCError = (expiryDate, { cardType, errorMessages = {} } = {}) => {
   if (!expiryDate) {
     return errorMessages.emptyCVC || EMPTY_CVC;
   }
@@ -86,7 +86,7 @@ export const getCVCError = (expiryDate, { cardType, errorMessages } = {}) => {
   }
   return;
 };
-export const getZIPError = (zip, { errorMessages } = {}) => {
+export const getZIPError = (zip, { errorMessages = {} } = {}) => {
   if (!zip) {
     return errorMessages.emptyZIP || EMPTY_ZIP;
   }

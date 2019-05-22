@@ -1,9 +1,13 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-const Wrapper = styled.div`
+const FieldWrapper = styled.div`
   display: inline-flex;
   flex-direction: column;
+
+  ${props => (props.hasErrored && props.styles.fieldWrapper ? props.styles.fieldWrapper.errored : undefined)};
+
+  ${props => (props.styles.fieldWrapper ? props.styles.fieldWrapper.base : undefined)};
 `;
 const InputWrapper = styled.div`
   align-items: center;
@@ -17,6 +21,7 @@ const InputWrapper = styled.div`
     props.hasErrored &&
     css`
       border-color: red;
+      ${props => props.styles.inputWrapper && props.styles.inputWrapper.errored};
     `};
 
   & input {
@@ -24,40 +29,67 @@ const InputWrapper = styled.div`
     margin: unset;
     padding: unset;
     outline: unset;
-    font-size: 16px;
+
+    ${props => (props.hasErrored && props.styles.input ? props.styles.input.errored : undefined)};
+
+    ${props => props.styles.input && props.styles.input.base};
   }
 
   & svg {
     margin-right: 0.6em;
+    ${props => props.styles.cardImage};
   }
 
   & input#cardnumber {
     width: 11rem;
+    ${props => props.styles.input && props.styles.input.cardNumber};
   }
 
   & input#expirydate {
     width: 4rem;
+    ${props => props.styles.input && props.styles.input.expiryDate};
   }
 
   & input#cvc {
     width: 2.5rem;
+    ${props => props.styles.input && props.styles.input.cvc};
   }
+
+  & input#zip {
+    width: 4rem;
+    & {
+      ${props => props.styles.input && props.styles.input.zip};
+    }
+  }
+
+  ${props => (props.styles.inputWrapper ? props.styles.inputWrapper.base : undefined)};
 `;
 const ErrorText = styled.div`
   color: red;
   font-size: 0.75rem;
   margin-top: 0.25rem;
+  ${props => (props.styles.errorText ? props.styles.errorText.base : undefined)};
 `;
 
-export default function PaymentInputsWrapper(props) {
-  const { children, error, isTouched, ...restProps } = props;
+function PaymentInputsWrapper(props) {
+  const { children, error, errorTextProps, inputWrapperProps, isTouched, styles, ...restProps } = props;
   const hasErrored = error && isTouched;
   return (
-    <Wrapper>
-      <InputWrapper hasErrored={hasErrored} {...restProps}>
+    <FieldWrapper hasErrored={hasErrored} styles={styles} {...restProps}>
+      <InputWrapper hasErrored={hasErrored} styles={styles} {...inputWrapperProps}>
         {children}
       </InputWrapper>
-      {hasErrored && <ErrorText>{error}</ErrorText>}
-    </Wrapper>
+      {hasErrored && (
+        <ErrorText styles={styles} {...errorTextProps}>
+          {error}
+        </ErrorText>
+      )}
+    </FieldWrapper>
   );
 }
+
+PaymentInputsWrapper.defaultProps = {
+  styles: {}
+};
+
+export default PaymentInputsWrapper;

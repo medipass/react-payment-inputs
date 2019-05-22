@@ -4,8 +4,6 @@ import utils from './utils';
 
 /**
  * TODO:
- *  - styling for ZIP
- *  - add ability to modify styling (class & style props)
  *  - doco
  */
 
@@ -35,6 +33,7 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
   const setInputError = React.useCallback((input, error) => {
     setErroredInputs(erroredInputs => {
       if (erroredInputs[input] === error) return erroredInputs;
+
       let newError = error;
       const newErroredInputs = { ...erroredInputs, [input]: error };
       if (error) {
@@ -56,8 +55,10 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
         setIsTouched(false);
       }
     });
+
     setTouchedInputs(touchedInputs => {
       if (touchedInputs[input] === value) return touchedInputs;
+
       const newTouchedInputs = { ...touchedInputs, [input]: value };
       onTouch && onTouch({ [input]: value }, newTouchedInputs);
       return newTouchedInputs;
@@ -365,6 +366,7 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
   const zipProps = React.useCallback(
     (props = {}) => ({
       autoComplete: 'off',
+      id: 'zip',
       maxLength: '6',
       name: 'zip',
       placeholder: 'ZIP',

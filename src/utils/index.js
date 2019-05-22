@@ -1,4 +1,4 @@
-import * as cardTypes from './card-types';
+import * as cardTypes from './cardTypes';
 import * as formatter from './formatter';
 import * as validator from './validator';
 

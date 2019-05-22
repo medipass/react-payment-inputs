@@ -1,4 +1,4 @@
-import * as cardTypes from './card-types';
+import * as cardTypes from './cardTypes';
 
 export const formatCardNumber = cardNumber => {
   const cardType = cardTypes.getCardTypeByValue(cardNumber);

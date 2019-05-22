@@ -18,10 +18,11 @@
     "clean": "rimraf es/ lib/ umd/ && yarn remove-proxies",
     "prepublishOnly": "yarn create-proxies && yarn build",
     "postpublish": "yarn clean",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "peerDependencies": {
     "react": ">=16.8.0",
     "styled-components": ">=4.0.0"
@@ -35,11 +36,18 @@
     "@babel/preset-env": "7.4.4",
     "@babel/preset-react": "7.0.0",
     "@medipass/eslint-config-react-medipass": "8.4.1",
+    "@storybook/addon-actions": "^5.0.11",
+    "@storybook/addon-links": "^5.0.11",
+    "@storybook/addons": "^5.0.11",
+    "@storybook/react": "^5.0.11",
     "babel-eslint": "10.0.1",
+    "babel-loader": "^8.0.6",
     "eslint": "5.16.0",
     "eslint-plugin-import": "2.17.2",
     "eslint-plugin-prettier": "3.0.1",
     "fannypack": "4.19.20",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
     "rimraf": "2.6.3",
     "rollup": "1.12.3",
     "rollup-plugin-babel": "4.3.2",
