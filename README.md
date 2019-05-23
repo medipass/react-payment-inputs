@@ -155,9 +155,9 @@ export default function PaymentInputs() {
 }
 ```
 
-#### Material UI
-
 #### Bootstrap
+
+<p align="center"><img src="./bootstrap.gif" width="500px"></img></p>
 
 ```jsx
 import React from 'react';
