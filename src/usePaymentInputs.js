@@ -430,12 +430,6 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
   }, []);
 
   return {
-    cardType,
-    erroredInputs,
-    error,
-    isTouched,
-    touchedInputs,
-
     cardImageProps,
     cardNumberProps,
     expiryDateProps,
@@ -444,6 +438,14 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
     wrapperProps: {
       error,
       isTouched
+    },
+
+    cardType,
+    meta: {
+      erroredInputs,
+      error,
+      isTouched,
+      touchedInputs
     }
   };
 }

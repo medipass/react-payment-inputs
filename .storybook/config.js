@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, ThemeProvider, css } from 'fannypack';
+import { Box, ThemeProvider, css, palette } from 'fannypack';
 import { configure, addDecorator } from '@storybook/react';
 
 // automatically import all files ending in *.stories.js
@@ -13,6 +13,11 @@ const theme = {
     base: css`
       & input {
         font-size: 16px;
+      }
+
+      *:focus {
+        outline: 2px solid ${palette('primary')};
+        outline-offset: 0px;
       }
     `
   }
