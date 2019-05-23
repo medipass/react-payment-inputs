@@ -110,8 +110,8 @@ export default function PaymentInputs() {
       {({ meta, getCardNumberProps, getExpiryDateProps, getCVCProps }) => (
         <div>
           <input {...getCardNumberProps({ onChange: handleChangeCardNumber })} value={cardNumber} />
-          <inp**ut {...getExpiryDateProps({ onChange: handleChangeExpiryDate })} value={expiryDate} />
-          <inpu**t {...getCVCProps({ onChange: handleChangeCVC })} value={cvc} />
+          <input {...getExpiryDateProps({ onChange: handleChangeExpiryDate })} value={expiryDate} />
+          <input {...getCVCProps({ onChange: handleChangeCVC })} value={cvc} />
           {meta.isTouched && meta.error && <span>Error: {meta.error}</span>}
         </div>
       )}
