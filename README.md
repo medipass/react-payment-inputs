@@ -242,7 +242,6 @@ export default function PaymentInputs() {
             isInvalid={touchedInputs.cardNumber && erroredInputs.cardNumber}
             placeholder="0000 0000 0000 0000"
           />
-          You can retrieve error state by making use of the error & touched attributes in `meta`.
           <Form.Control.Feedback type="invalid">{erroredInputs.cardNumber}</Form.Control.Feedback>
         </Form.Group>
         <Form.Group as={Col} style={{ maxWidth: '10rem' }}>

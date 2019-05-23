@@ -142,6 +142,7 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
 
   const getCardNumberProps = React.useCallback(
     (props = {}) => ({
+      'aria-label': 'Card number',
       autoComplete: 'cc-number',
       id: 'cardnumber',
       name: 'cardnumber',
@@ -231,6 +232,7 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
 
   const getExpiryDateProps = React.useCallback(
     (props = {}) => ({
+      'aria-label': 'Expiry date in format MM YY',
       autoComplete: 'cc-exp',
       id: 'expirydate',
       name: 'cc-exp',
@@ -328,6 +330,7 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
 
   const getCVCProps = React.useCallback(
     (props = {}) => ({
+      'aria-label': 'CVC',
       autoComplete: 'cc-csc',
       id: 'cvc',
       name: 'cvc',
@@ -430,6 +433,7 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
     (props = {}) => {
       const images = props.images || {};
       return {
+        'aria-label': cardType ? cardType.displayName : 'Placeholder card',
         children: images[cardType ? cardType.type : 'placeholder'] || images.placeholder,
         width: '1.5em',
         height: '1em',
