@@ -6,6 +6,28 @@
 
 <p align="center"><img src="./wrapper.gif" width="500px"></img></p>
 
+- [React Payment Inputs](#react-payment-inputs)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [With hooks](#with-hooks)
+    - [With render props](#with-render-props)
+    - [Using the built-in styled wrapper](#using-the-built-in-styled-wrapper)
+    - [Using a third-party UI library](#using-a-third-party-ui-library)
+      - [Fannypack](#fannypack)
+      - [Bootstrap](#bootstrap)
+    - [More examples](#more-examples)
+  - [`usePaymentInputs(options)`](#usepaymentinputsoptions)
+    - [options](#options)
+      - [options.errorMessages](#optionserrormessages)
+        - [Example](#example)
+      - [options.onBlur](#optionsonblur)
+      - [options.onChange](#optionsonchange)
+      - [options.onError](#optionsonerror)
+      - [options.onTouch](#optionsontouch)
+      - [`data`](#data)
+        - [cardNumberProps](#cardnumberprops)
+        - [expiryDateProps](#expirydateprops)
+
 ## Installation
 
 ```
@@ -103,6 +125,8 @@ export default function PaymentInputs() {
 
 ### Using a third-party UI library
 
+React Payment Inputs allows you to integrate into pretty much any React UI library. Below are a couple of examples of how you can fit React Payment Inputs into a UI library using `usePaymentInputs`. You can also do the same with `<PaymentInputsContainer>`.
+
 #### Fannypack
 
 <p align="center"><img src="./fannypack.gif" width="500px"></img></p>
@@ -110,7 +134,7 @@ export default function PaymentInputs() {
 ```jsx
 import React from 'react';
 import { FieldSet, InputField } from 'fannypack';
-import { PaymentInputsWrapper, usePaymentInputs } from 'react-payment-inputs';
+import { usePaymentInputs } from 'react-payment-inputs';
 import images from 'react-payment-inputs/images';
 
 export default function PaymentInputs() {
@@ -125,10 +149,12 @@ export default function PaymentInputs() {
   return (
     <FieldSet isHorizontal>
       <InputField
+        // Here is where React Payment Inputs injects itself into the input element.
         {...cardNumberProps()}
         placeholder="0000 0000 0000 0000"
         label="Card number"
         inputRef={cardNumberProps().ref}
+        // You can retrieve error state by making use of the error & touched attributes in `meta`.
         state={erroredInputs.cardNumber && touchedInputs.cardNumber ? 'danger' : undefined}
         validationText={touchedInputs.cardNumber && erroredInputs.cardNumber}
         maxWidth="15rem"
@@ -162,7 +188,7 @@ export default function PaymentInputs() {
 ```jsx
 import React from 'react';
 import { FieldSet, InputField } from 'fannypack';
-import { PaymentInputsWrapper, usePaymentInputs } from 'react-payment-inputs';
+import { usePaymentInputs } from 'react-payment-inputs';
 import images from 'react-payment-inputs/images';
 
 export default function PaymentInputs() {
@@ -180,10 +206,13 @@ export default function PaymentInputs() {
         <Form.Group as={Col} style={{ maxWidth: '15rem' }}>
           <Form.Label>Card number</Form.Label>
           <Form.Control
+            // Here is where React Payment Inputs injects itself into the input element.
             {...cardNumberProps()}
+            // You can retrieve error state by making use of the error & touched attributes in `meta`.
             isInvalid={touchedInputs.cardNumber && erroredInputs.cardNumber}
             placeholder="0000 0000 0000 0000"
           />
+          You can retrieve error state by making use of the error & touched attributes in `meta`.
           <Form.Control.Feedback type="invalid">{erroredInputs.cardNumber}</Form.Control.Feedback>
         </Form.Group>
         <Form.Group as={Col} style={{ maxWidth: '10rem' }}>
@@ -208,3 +237,84 @@ export default function PaymentInputs() {
   );
 }
 ```
+
+### More examples
+
+- [Storybook](TODO)
+  - [Source](./stories/index.stories.js)
+
+## `usePaymentInputs(options)`
+
+> returns [an object (`data`)](#data)
+
+### options
+
+> `Object({ errorMessages, onBlur, onChange, onError, onTouch })`
+
+#### options.errorMessages
+
+> `Object`
+
+Set custom error messages for the inputs.
+
+##### Example
+
+```js
+const { ... } = usePaymentInputs({
+  errorMessages: {
+    emptyCardNumber: 'El número de la tarjeta es inválido',
+    invalidCardNumber: 'El número de la tarjeta es inválido',
+    emptyExpiryDate: 'La fecha de expiración es inválida',
+    monthOutOfRange: 'El mes de expiración debe estar entre 01 y 12',
+    yearOutOfRange: 'El año de expiración no puede estar en el pasado',
+    dateOutOfRange: 'La fecha de expiración no puede estar en el pasado',
+    invalidExpiryDate: 'La fecha de expiración es inválida',
+    emptyCVC: 'El código de seguridad es inválido',
+    invalidCVC: 'El código de seguridad es inválido'
+  }
+})
+```
+
+#### options.onBlur
+
+> `function(event)`
+
+Function to handle the blur event on the inputs. It is invoked when any of the inputs blur.
+
+#### options.onChange
+
+> `function(event)`
+
+Function to handle the change event on the inputs. It is invoked when any of the inputs change.
+
+#### options.onError
+
+> `function(error, erroredInputs)`
+
+Function to invoke when any of the inputs error.
+
+#### options.onTouch
+
+> `function(touchedInput, touchedInputs)`
+
+Function to invoke when any of the inputs are touched.
+
+### `data`
+
+#### cardNumberProps
+
+> `function(overrideProps)` | returns `Object<props>`
+
+Returns the props to apply to the **card number** input.
+
+#### expiryDateProps
+
+> `function(overrideProps)` | returns `Object<props>`
+
+Returns the props to apply to the **expiry date** input.
+
+#### cvcProps
+
+> `function(overrideProps)` | returns `Object<props>`
+
+]Returns the props to apply to the **CVC** input.
