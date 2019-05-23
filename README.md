@@ -29,6 +29,8 @@
       - [expiryDateProps](#expirydateprops)
       - [cvcProps](#cvcprops)
 
+## [Demos](#TODO)
+
 ## Installation
 
 ```
@@ -68,7 +70,7 @@ export default function PaymentInputs() {
 }
 ```
 
-> By spreading props on the inputs as shown above, React Payment Inputs will automatically handle the formatting, focus & validation logic for you.
+> By spreading props (e.g. `{...cardNumberProps()}`) on the inputs as shown above, React Payment Inputs will automatically handle the formatting, focus & validation logic for you.
 
 ### With render props
 
@@ -318,4 +320,24 @@ Returns the props to apply to the **expiry date** input.
 
 > `function(overrideProps)` | returns `Object<props>`
 
-]Returns the props to apply to the **CVC** input.
+Returns the props to apply to the **CVC** input.
+
+## Usage with a form library
+
+### Formik
+
+### React Final Form
+
+### Redux Form
+
+## Custom error messages
+
+## Global event handlers
+
+## Metadata
+
+## Customising the in-built style wrapper
+
+## License
+
+MIT © [Medipass Solutions Pty. Ltd.](https://github.com/medipass)

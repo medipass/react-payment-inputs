@@ -440,8 +440,8 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
       isTouched
     },
 
-    cardType,
     meta: {
+      cardType,
       erroredInputs,
       error,
       isTouched,
