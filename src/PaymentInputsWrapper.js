@@ -23,8 +23,19 @@ const InputWrapper = styled.div`
     ${props =>
       props.hasErrored &&
       css`
-        border-color: red;
+        border-color: #c9444d;
+        box-shadow: #c9444d 0px 0px 0px 1px;
         ${props => props.styles.inputWrapper && props.styles.inputWrapper.errored};
+      `};
+  }
+
+  & {
+    ${props =>
+      props.focused &&
+      css`
+        border-color: #444bc9;
+        box-shadow: #444bc9 0px 0px 0px 1px;
+        ${props => props.styles.inputWrapper && props.styles.inputWrapper.focused};
       `};
   }
 
@@ -79,7 +90,7 @@ const InputWrapper = styled.div`
   ${props => (props.styles.inputWrapper ? props.styles.inputWrapper.base : undefined)};
 `;
 const ErrorText = styled.div`
-  color: red;
+  color: #c9444d;
   font-size: 0.75rem;
   margin-top: 0.25rem;
 
@@ -89,11 +100,11 @@ const ErrorText = styled.div`
 `;
 
 function PaymentInputsWrapper(props) {
-  const { children, error, errorTextProps, inputWrapperProps, isTouched, styles, ...restProps } = props;
+  const { children, error, errorTextProps, focused, inputWrapperProps, isTouched, styles, ...restProps } = props;
   const hasErrored = error && isTouched;
   return (
     <FieldWrapper hasErrored={hasErrored} styles={styles} {...restProps}>
-      <InputWrapper hasErrored={hasErrored} styles={styles} {...inputWrapperProps}>
+      <InputWrapper focused={focused} hasErrored={hasErrored} styles={styles} {...inputWrapperProps}>
         {children}
       </InputWrapper>
       {hasErrored && (

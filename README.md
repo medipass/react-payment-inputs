@@ -17,18 +17,26 @@
       - [Fannypack](#fannypack)
       - [Bootstrap](#bootstrap)
     - [More examples](#more-examples)
-  - [`usePaymentInputs(options)`](#usepaymentinputsoptions)
+  - [`data = usePaymentInputs(options)`](#data--usepaymentinputsoptions)
     - [options](#options)
       - [options.errorMessages](#optionserrormessages)
-        - [Example](#example)
       - [options.onBlur](#optionsonblur)
       - [options.onChange](#optionsonchange)
       - [options.onError](#optionsonerror)
       - [options.onTouch](#optionsontouch)
     - [`data`](#data)
-      - [cardNumberProps](#cardnumberprops)
-      - [expiryDateProps](#expirydateprops)
-      - [cvcProps](#cvcprops)
+      - [getCardNumberProps](#getcardnumberprops)
+      - [getExpiryDateProps](#getexpirydateprops)
+      - [getCVCProps](#getcvcprops)
+      - [getZIPProps](#getzipprops)
+      - [getCardImageProps](#getcardimageprops)
+      - [meta.cardType](#metacardtype)
+      - [meta.error](#metaerror)
+      - [meta.isTouched](#metaistouched)
+      - [meta.erroredInputs](#metaerroredinputs)
+      - [meta.touchedInputs](#metatouchedinputs)
+      - [meta.focused](#metafocused)
+      - [wrapperProps](#wrapperprops)
   - [Usage with a form library](#usage-with-a-form-library)
     - [Formik](#formik)
     - [React Final Form](#react-final-form)
@@ -37,6 +45,7 @@
   - [Global event handlers](#global-event-handlers)
   - [Metadata](#metadata)
   - [Customising the in-built style wrapper](#customising-the-in-built-style-wrapper)
+  - [Custom card images](#custom-card-images)
   - [License](#license)
 
 ## [Demos](#TODO)
@@ -57,7 +66,9 @@ yarn add react-payment-inputs
 
 <p align="center"><img src="./basic.gif" width="300px"></img></p>
 
-By default (as seen above), React Payment Inputs does not come with built-in styling. If you would like to use the built-in styles as seen in the animation above, [read "Using the built-in styled wrapper"](#using-the-built-in-styled-wrapper).
+By default (as seen above), React Payment Inputs does not come with built-in styling meaning that you can easily adapt React Payment Inputs to your own design system.
+
+However, if you would like to use the built-in styles as seen in the animation above, [read "Using the built-in styled wrapper"](#using-the-built-in-styled-wrapper).
 
 ### With hooks
 
@@ -68,19 +79,22 @@ import React from 'react';
 import { usePaymentInputs } from 'react-payment-inputs';
 
 export default function PaymentInputs() {
-  const { meta, cardNumberProps, expiryDateProps, cvcProps } = usePaymentInputs();
+  const { meta, getCardNumberProps, getExpiryDateProps, getCVCProps } = usePaymentInputs();
+
   return (
     <div>
-      <input {...cardNumberProps()} />
-      <input {...expiryDateProps()} />
-      <input {...cvcProps()} />
+      <input {...getCardNumberProps({ onChange: handleChangeCardNumber })} value={cardNumber} />
+      <input {...getExpiryDateProps({ onChange: handleChangeExpiryDate })} value={expiryDate} />
+      <input {...getCVCProps({ onChange: handleChangeCVC })} value={cvc} />
       {meta.isTouched && meta.error && <span>Error: {meta.error}</span>}
     </div>
   );
 }
 ```
 
-> By spreading props (e.g. `{...cardNumberProps()}`) on the inputs as shown above, React Payment Inputs will automatically handle the formatting, focus & validation logic for you.
+> By spreading the prop getter functions (e.g. `{...getCardNumberProps()}`) on the inputs as shown above, React Payment Inputs will automatically handle the formatting, focus & validation logic for you.
+
+> **IMPORTANT:** You must place your event handlers (e.g. `onChange`, `onBlur`, etc) inside the prop getter function (e.g. `getCardNumberProps()`) so the default event handlers in React Payment Inputs don't get overridden.
 
 ### With render props
 
@@ -93,11 +107,11 @@ import { PaymentInputsContainer } from 'react-payment-inputs';
 export default function PaymentInputs() {
   return (
     <PaymentInputsContainer>
-      {({ meta, cardNumberProps, expiryDateProps, cvcProps }) => (
+      {({ meta, getCardNumberProps, getExpiryDateProps, getCVCProps }) => (
         <div>
-          <input {...cardNumberProps()} />
-          <input {...expiryDateProps()} />
-          <input {...cvcProps()} />
+          <input {...getCardNumberProps({ onChange: handleChangeCardNumber })} value={cardNumber} />
+          <inp**ut {...getExpiryDateProps({ onChange: handleChangeExpiryDate })} value={expiryDate} />
+          <inpu**t {...getCVCProps({ onChange: handleChangeCVC })} value={cvc} />
           {meta.isTouched && meta.error && <span>Error: {meta.error}</span>}
         </div>
       )}
@@ -105,6 +119,8 @@ export default function PaymentInputs() {
   );
 }
 ```
+
+> **IMPORTANT:** You must place your event handlers (e.g. `onChange`, `onBlur`, etc) inside the prop getter function (e.g. `getCardNumberProps()`) so the default event handlers in React Payment Inputs don't get overridden.
 
 ### Using the built-in styled wrapper
 
@@ -120,17 +136,18 @@ import images from 'react-payment-inputs/images';
 export default function PaymentInputs() {
   const {
     wrapperProps,
-    cardImageProps,
-    cardNumberProps,
-    expiryDateProps,
-    cvcProps
+    getCardImageProps,
+    getCardNumberProps,
+    getExpiryDateProps,
+    getCVCProps
   } = usePaymentInputs();
+
   return (
     <PaymentInputsWrapper {...wrapperProps}>
-      <svg {...cardImageProps({ images })} />
-      <input {...cardNumberProps()} />
-      <input {...expiryDateProps()} />
-      <input {...cvcProps()} />
+      <svg {...getCardImageProps({ images })} />
+      <input {...getCardNumberProps()} />
+      <input {...getExpiryDateProps()} />
+      <input {...getCVCProps()} />
     </PaymentInputsWrapper>
   );
 }
@@ -153,9 +170,9 @@ import images from 'react-payment-inputs/images';
 export default function PaymentInputs() {
   const {
     meta,
-    cardNumberProps,
-    expiryDateProps,
-    cvcProps
+    getCardNumberProps,
+    getExpiryDateProps,
+    getCVCProps
   } = usePaymentInputs();
   const { erroredInputs, touchedInputs } = meta;
 
@@ -163,28 +180,28 @@ export default function PaymentInputs() {
     <FieldSet isHorizontal>
       <InputField
         // Here is where React Payment Inputs injects itself into the input element.
-        {...cardNumberProps()}
+        {...getCardNumberProps()}
         placeholder="0000 0000 0000 0000"
         label="Card number"
-        inputRef={cardNumberProps().ref}
+        inputRef={getCardNumberProps().ref}
         // You can retrieve error state by making use of the error & touched attributes in `meta`.
         state={erroredInputs.cardNumber && touchedInputs.cardNumber ? 'danger' : undefined}
         validationText={touchedInputs.cardNumber && erroredInputs.cardNumber}
         maxWidth="15rem"
       />
       <InputField
-        {...expiryDateProps()}
+        {...getExpiryDateProps()}
         label="Expiry date"
-        inputRef={expiryDateProps().ref}
+        inputRef={getExpiryDateProps().ref}
         state={erroredInputs.expiryDate && touchedInputs.expiryDate ? 'danger' : undefined}
         validationText={touchedInputs.expiryDate && erroredInputs.expiryDate}
         maxWidth="8rem"
       />
       <InputField
-        {...cvcProps()}
+        {...getCVCProps()}
         placeholder="123"
         label="CVC"
-        inputRef={cvcProps().ref}
+        inputRef={getCVCProps().ref}
         state={erroredInputs.cvc && touchedInputs.cvc ? 'danger' : undefined}
         validationText={touchedInputs.cvc && erroredInputs.cvc}
         maxWidth="5rem"
@@ -207,9 +224,9 @@ import images from 'react-payment-inputs/images';
 export default function PaymentInputs() {
   const {
     meta,
-    cardNumberProps,
-    expiryDateProps,
-    cvcProps
+    getCardNumberProps,
+    getExpiryDateProps,
+    getCVCProps
   } = usePaymentInputs();
   const { erroredInputs, touchedInputs } = meta;
 
@@ -220,7 +237,7 @@ export default function PaymentInputs() {
           <Form.Label>Card number</Form.Label>
           <Form.Control
             // Here is where React Payment Inputs injects itself into the input element.
-            {...cardNumberProps()}
+            {...getCardNumberProps()}
             // You can retrieve error state by making use of the error & touched attributes in `meta`.
             isInvalid={touchedInputs.cardNumber && erroredInputs.cardNumber}
             placeholder="0000 0000 0000 0000"
@@ -231,7 +248,7 @@ export default function PaymentInputs() {
         <Form.Group as={Col} style={{ maxWidth: '10rem' }}>
           <Form.Label>Expiry date</Form.Label>
           <Form.Control
-            {...expiryDateProps()}
+            {...getExpiryDateProps()}
             isInvalid={touchedInputs.expiryDate && erroredInputs.expiryDate}
           />
           <Form.Control.Feedback type="invalid">{erroredInputs.expiryDate}</Form.Control.Feedback>
@@ -239,7 +256,7 @@ export default function PaymentInputs() {
         <Form.Group as={Col} style={{ maxWidth: '7rem' }}>
           <Form.Label>CVC</Form.Label>
           <Form.Control
-            {...cvcProps()}
+            {...getCVCProps()}
             isInvalid={touchedInputs.cvc && erroredInputs.cvc}
             placeholder="123"
           />
@@ -256,7 +273,7 @@ export default function PaymentInputs() {
 - [Storybook](TODO)
   - [Source](./stories/index.stories.js)
 
-## `usePaymentInputs(options)`
+## `data = usePaymentInputs(options)`
 
 > returns [an object (`data`)](#data)
 
@@ -314,23 +331,174 @@ Function to invoke when any of the inputs are touched.
 
 ### `data`
 
-#### cardNumberProps
+#### getCardNumberProps
 
 > `function(overrideProps)` | returns `Object<props>`
 
 Returns the props to apply to the **card number** input.
 
-#### expiryDateProps
+**IMPORTANT:** You must place your event handlers (e.g. `onChange`, `onBlur`, etc) inside the `getCardNumberProps()` so the default event handlers in React Payment Inputs don't get overridden.
+
+##### Example snippet
+
+```jsx
+<input {...getCardNumberProps({ onBlur: handleBlur, onChange: handleChange })} />
+```
+
+#### getExpiryDateProps
 
 > `function(overrideProps)` | returns `Object<props>`
 
 Returns the props to apply to the **expiry date** input.
 
-#### cvcProps
+**IMPORTANT:** You must place your event handlers (e.g. `onChange`, `onBlur`, etc) inside the `getExpiryDateProps()` so the default event handlers in React Payment Inputs don't get overridden.
+
+##### Example snippet
+
+```jsx
+<input {...getExpiryDateProps({ onBlur: handleBlur, onChange: handleChange })} />
+```
+
+#### getCVCProps
 
 > `function(overrideProps)` | returns `Object<props>`
 
 Returns the props to apply to the **CVC** input.
+
+**IMPORTANT:** You must place your event handlers (e.g. `onChange`, `onBlur`, etc) inside the `getCVCProps()` so the default event handlers in React Payment Inputs don't get overridden.
+
+##### Example snippet
+
+```jsx
+<input {...getCVCProps({ onBlur: handleBlur, onChange: handleChange })} />
+```
+
+#### getZIPProps
+
+> `function(overrideProps)` | returns `Object<props>`
+
+Returns the props to apply to the **ZIP** input.
+
+**IMPORTANT:** You must place your event handlers (e.g. `onChange`, `onBlur`, etc) inside the `getZIPProps()` so the default event handlers in React Payment Inputs don't get overridden.
+
+##### Example snippet
+
+```jsx
+<input {...getZIPProps({ onBlur: handleBlur, onChange: handleChange })} />
+```
+
+#### getCardImageProps
+
+> `function({ images })` | returns `Object<props>`
+
+Returns the props to apply to the **card image** SVG.
+
+This function only supports SVG elements currently. If you have a need for another format, please raise an issue.
+
+You can also supply [custom card images](#custom-card-images) using the `images` attribute. The example below uses the default card images from React Payment Inputs.
+
+##### Example snippet
+
+```jsx
+import images from 'react-payment-inputs/images';
+
+<svg {...getCardImageProps({ images })} />
+```
+
+#### meta.cardType
+
+> Object
+
+Returns information about the current card type, including: name, lengths and formats.
+
+##### Example snippet
+
+```jsx
+const { meta } = usePaymentInputs();
+
+<span>Current card: {meta.cardType.displayName}</span>
+```
+
+#### meta.error
+
+> string
+
+Returns the current global error between all rendered inputs.
+
+##### Example snippet
+
+```jsx
+const { meta } = usePaymentInputs();
+
+console.log(meta.error); // "Card number is invalid"
+```
+
+#### meta.isTouched
+
+> boolean
+
+Returns the current global touched state between all rendered inputs.
+
+#### meta.erroredInputs
+
+> Object
+
+Returns the error message of each rendered input.
+
+##### Example snippet
+
+```jsx
+const { meta } = usePaymentInputs();
+
+console.log(meta.erroredInputs);
+/*
+{
+  cardNumber: undefined,
+  expiryDate: 'Enter an expiry date',
+  cvc: 'Enter a CVC'
+}
+*/
+```
+
+#### meta.touchedInputs
+
+> Object
+
+Returns the touch state of each rendered input.
+
+##### Example snippet
+
+```jsx
+const { meta } = usePaymentInputs();
+
+console.log(meta.touchedInputs);
+/*
+{
+  cardNumber: true,
+  expiryDate: true,
+  cvc: false
+}
+*/
+```
+
+#### meta.focused
+
+> string
+
+Returns the current focused input.
+
+```jsx
+const { meta } = usePaymentInputs();
+
+console.log(meta.focused); // "cardNumber"
+```
+
+#### wrapperProps
+
+> Object
+
+Returns the props to apply to `<PaymentInputsWrapper>`.
+
 
 ## Usage with a form library
 
@@ -347,6 +515,8 @@ Returns the props to apply to the **CVC** input.
 ## Metadata
 
 ## Customising the in-built style wrapper
+
+## Custom card images
 
 ## License
 

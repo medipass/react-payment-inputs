@@ -29,6 +29,7 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
   });
   const [error, setError] = React.useState();
   const [cardType, setCardType] = React.useState();
+  const [focused, setFocused] = React.useState();
 
   const setInputError = React.useCallback((input, error) => {
     setErroredInputs(erroredInputs => {
@@ -72,6 +73,7 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
       return e => {
         props.onBlur && props.onBlur(e);
         onBlur && onBlur(e);
+        setFocused(undefined);
         setInputTouched('cardNumber', true);
       };
     },
@@ -115,6 +117,13 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
     [errorMessages, onChange, setInputError, setInputTouched]
   );
 
+  const handleFocusCardNumber = React.useCallback((props = {}) => {
+    return e => {
+      props.onFocus && props.onFocus();
+      setFocused('cardNumber');
+    };
+  }, []);
+
   const handleKeyPressCardNumber = React.useCallback((props = {}) => {
     return e => {
       const formattedCardNumber = e.target.value || '';
@@ -131,7 +140,7 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
     };
   }, []);
 
-  const cardNumberProps = React.useCallback(
+  const getCardNumberProps = React.useCallback(
     (props = {}) => ({
       autoComplete: 'cc-number',
       id: 'cardnumber',
@@ -142,9 +151,10 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
       ...props,
       onBlur: handleBlurCardNumber(props),
       onChange: handleChangeCardNumber(props),
+      onFocus: handleFocusCardNumber(props),
       onKeyPress: handleKeyPressCardNumber(props)
     }),
-    [handleBlurCardNumber, handleChangeCardNumber, handleKeyPressCardNumber]
+    [handleBlurCardNumber, handleChangeCardNumber, handleFocusCardNumber, handleKeyPressCardNumber]
   );
   /** ====== END: CARD NUMBER STUFF ====== */
 
@@ -154,6 +164,7 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
       return e => {
         props.onBlur && props.onBlur(e);
         onBlur && onBlur(e);
+        setFocused(undefined);
         setInputTouched('expiryDate', true);
       };
     },
@@ -181,6 +192,13 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
     },
     [errorMessages, onChange, setInputError, setInputTouched]
   );
+
+  const handleFocusExpiryDate = React.useCallback((props = {}) => {
+    return e => {
+      props.onFocus && props.onFocus();
+      setFocused('expiryDate');
+    };
+  }, []);
 
   const handleKeyDownExpiryDate = React.useCallback(
     (props = {}) => {
@@ -211,7 +229,7 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
     };
   }, []);
 
-  const expiryDateProps = React.useCallback(
+  const getExpiryDateProps = React.useCallback(
     (props = {}) => ({
       autoComplete: 'cc-exp',
       id: 'expirydate',
@@ -222,10 +240,17 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
       ...props,
       onBlur: handleBlurExpiryDate(props),
       onChange: handleChangeExpiryDate(props),
+      onFocus: handleFocusExpiryDate(props),
       onKeyDown: handleKeyDownExpiryDate(props),
       onKeyPress: handleKeyPressExpiryDate(props)
     }),
-    [handleBlurExpiryDate, handleChangeExpiryDate, handleKeyDownExpiryDate, handleKeyPressExpiryDate]
+    [
+      handleBlurExpiryDate,
+      handleChangeExpiryDate,
+      handleFocusExpiryDate,
+      handleKeyDownExpiryDate,
+      handleKeyPressExpiryDate
+    ]
   );
   /** ====== END: EXPIRY DATE STUFF ====== */
 
@@ -235,6 +260,7 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
       return e => {
         props.onBlur && props.onBlur(e);
         onBlur && onBlur(e);
+        setFocused(undefined);
         setInputTouched('cvc', true);
       };
     },
@@ -260,6 +286,13 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
     },
     [errorMessages, onChange, setInputError, setInputTouched]
   );
+
+  const handleFocusCVC = React.useCallback((props = {}) => {
+    return e => {
+      props.onFocus && props.onFocus();
+      setFocused('cvc');
+    };
+  }, []);
 
   const handleKeyDownCVC = React.useCallback(
     (props = {}) => {
@@ -293,7 +326,7 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
     };
   }, []);
 
-  const cvcProps = React.useCallback(
+  const getCVCProps = React.useCallback(
     (props = {}) => ({
       autoComplete: 'cc-csc',
       id: 'cvc',
@@ -304,10 +337,11 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
       ...props,
       onBlur: handleBlurCVC(props),
       onChange: handleChangeCVC(props, { cardType }),
+      onFocus: handleFocusCVC(props),
       onKeyDown: handleKeyDownCVC(props),
       onKeyPress: handleKeyPressCVC(props, { cardType })
     }),
-    [cardType, handleBlurCVC, handleChangeCVC, handleKeyDownCVC, handleKeyPressCVC]
+    [cardType, handleBlurCVC, handleChangeCVC, handleFocusCVC, handleKeyDownCVC, handleKeyPressCVC]
   );
   /** ====== END: CVC STUFF ====== */
 
@@ -317,6 +351,7 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
       return e => {
         props.onBlur && props.onBlur(e);
         onBlur && onBlur(e);
+        setFocused(undefined);
         setInputTouched('zip', true);
       };
     },
@@ -339,6 +374,13 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
     },
     [errorMessages, onChange, setInputError, setInputTouched]
   );
+
+  const handleFocusZIP = React.useCallback((props = {}) => {
+    return e => {
+      props.onFocus && props.onFocus();
+      setFocused('zip');
+    };
+  }, []);
 
   const handleKeyDownZIP = React.useCallback(
     (props = {}) => {
@@ -363,7 +405,7 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
     };
   }, []);
 
-  const zipProps = React.useCallback(
+  const getZIPProps = React.useCallback(
     (props = {}) => ({
       autoComplete: 'off',
       id: 'zip',
@@ -375,15 +417,16 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
       ...props,
       onBlur: handleBlurZIP(props),
       onChange: handleChangeZIP(props),
+      onFocus: handleFocusZIP(props),
       onKeyDown: handleKeyDownZIP(props),
       onKeyPress: handleKeyPressZIP(props)
     }),
-    [handleBlurZIP, handleChangeZIP, handleKeyDownZIP, handleKeyPressZIP]
+    [handleBlurZIP, handleChangeZIP, handleFocusZIP, handleKeyDownZIP, handleKeyPressZIP]
   );
   /** ====== END: ZIP STUFF ====== */
 
   /** ====== START: CARD IMAGE STUFF ====== */
-  const cardImageProps = React.useCallback(
+  const getCardImageProps = React.useCallback(
     (props = {}) => {
       const images = props.images || {};
       return {
@@ -430,13 +473,14 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
   }, []);
 
   return {
-    cardImageProps,
-    cardNumberProps,
-    expiryDateProps,
-    cvcProps,
-    zipProps,
+    getCardImageProps,
+    getCardNumberProps,
+    getExpiryDateProps,
+    getCVCProps,
+    getZIPProps,
     wrapperProps: {
       error,
+      focused,
       isTouched
     },
 
@@ -444,6 +488,7 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
       cardType,
       erroredInputs,
       error,
+      focused,
       isTouched,
       touchedInputs
     }

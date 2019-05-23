@@ -11,17 +11,18 @@ import images from '../src/images';
 storiesOf('usePaymentInputs', module)
   .add('basic (no styles)', () => {
     function Component() {
-      const { meta, cardNumberProps, expiryDateProps, cvcProps } = usePaymentInputs();
+      const { meta, getCardNumberProps, getExpiryDateProps, getCVCProps } = usePaymentInputs();
+      console.log(meta);
       return (
         <LayoutSet spacing="major-1">
           <div>
-            <input {...cardNumberProps()} />
+            <input {...getCardNumberProps()} />
           </div>
           <div>
-            <input {...expiryDateProps()} />
+            <input {...getExpiryDateProps()} />
           </div>
           <div>
-            <input {...cvcProps()} />
+            <input {...getCVCProps()} />
           </div>
           {meta.error && meta.isTouched && <div>{meta.error}</div>}
         </LayoutSet>
@@ -32,14 +33,14 @@ storiesOf('usePaymentInputs', module)
   })
   .add('styled wrapper', () => {
     function Component() {
-      const { cardNumberProps, expiryDateProps, cvcProps, cardImageProps, wrapperProps } = usePaymentInputs();
+      const { getCardNumberProps, getExpiryDateProps, getCVCProps, getCardImageProps, wrapperProps } = usePaymentInputs();
       return (
         <div>
           <PaymentInputsWrapper {...wrapperProps}>
-            <svg {...cardImageProps({ images })} />
-            <input {...cardNumberProps()} />
-            <input {...expiryDateProps()} />
-            <input {...cvcProps()} />
+            <svg {...getCardImageProps({ images })} />
+            <input {...getCardNumberProps()} />
+            <input {...getExpiryDateProps()} />
+            <input {...getCVCProps()} />
           </PaymentInputsWrapper>
         </div>
       );
@@ -49,15 +50,15 @@ storiesOf('usePaymentInputs', module)
   })
   .add('styled wrapper (with ZIP)', () => {
     function Component() {
-      const { cardNumberProps, expiryDateProps, cvcProps, zipProps, cardImageProps, wrapperProps } = usePaymentInputs();
+      const { getCardNumberProps, getExpiryDateProps, getCVCProps, getZIPProps, getCardImageProps, wrapperProps } = usePaymentInputs();
       return (
         <div>
           <PaymentInputsWrapper {...wrapperProps}>
-            <svg {...cardImageProps({ images })} />
-            <input {...cardNumberProps()} />
-            <input {...expiryDateProps()} />
-            <input {...cvcProps()} />
-            <input {...zipProps()} />
+            <svg {...getCardImageProps({ images })} />
+            <input {...getCardNumberProps()} />
+            <input {...getExpiryDateProps()} />
+            <input {...getCVCProps()} />
+            <input {...getZIPProps()} />
           </PaymentInputsWrapper>
         </div>
       );
@@ -67,13 +68,13 @@ storiesOf('usePaymentInputs', module)
   })
   .add('styled wrapper (no CVC)', () => {
     function Component() {
-      const { cardNumberProps, expiryDateProps, cardImageProps, wrapperProps } = usePaymentInputs();
+      const { getCardNumberProps, getExpiryDateProps, getCardImageProps, wrapperProps } = usePaymentInputs();
       return (
         <div>
           <PaymentInputsWrapper {...wrapperProps}>
-            <svg {...cardImageProps({ images })} />
-            <input {...cardNumberProps()} />
-            <input {...expiryDateProps()} />
+            <svg {...getCardImageProps({ images })} />
+            <input {...getCardNumberProps()} />
+            <input {...getExpiryDateProps()} />
           </PaymentInputsWrapper>
         </div>
       );
@@ -83,7 +84,7 @@ storiesOf('usePaymentInputs', module)
   })
   .add('styled wrapper (with custom styling)', () => {
     function Component() {
-      const { cardNumberProps, expiryDateProps, cvcProps, cardImageProps, wrapperProps } = usePaymentInputs();
+      const { getCardNumberProps, getExpiryDateProps, getCVCProps, getCardImageProps, wrapperProps } = usePaymentInputs();
       return (
         <div>
           <PaymentInputsWrapper
@@ -100,6 +101,12 @@ storiesOf('usePaymentInputs', module)
                 `,
                 errored: css`
                   border-color: maroon;
+                `,
+                focused: css`
+                  border-color: unset;
+                  box-shadow: unset;
+                  outline: 2px solid blue;
+                  outline-offset: 2px;
                 `
               },
               input: {
@@ -126,10 +133,10 @@ storiesOf('usePaymentInputs', module)
               }
             }}
           >
-            <svg {...cardImageProps({ images })} />
-            <input {...cardNumberProps()} />
-            <input {...expiryDateProps()} />
-            <input {...cvcProps()} />
+            <svg {...getCardImageProps({ images })} />
+            <input {...getCardNumberProps()} />
+            <input {...getExpiryDateProps()} />
+            <input {...getCVCProps()} />
           </PaymentInputsWrapper>
         </div>
       );
@@ -139,7 +146,7 @@ storiesOf('usePaymentInputs', module)
   })
   .add('custom error messages', () => {
     function Component() {
-      const { cardNumberProps, expiryDateProps, cvcProps, cardImageProps, wrapperProps } = usePaymentInputs({
+      const { getCardNumberProps, getExpiryDateProps, getCVCProps, getCardImageProps, wrapperProps } = usePaymentInputs({
         errorMessages: {
           emptyCardNumber: 'El número de la tarjeta es inválido',
           invalidCardNumber: 'El número de la tarjeta es inválido',
@@ -155,10 +162,10 @@ storiesOf('usePaymentInputs', module)
       return (
         <div>
           <PaymentInputsWrapper {...wrapperProps}>
-            <svg {...cardImageProps({ images })} />
-            <input {...cardNumberProps()} />
-            <input {...expiryDateProps()} />
-            <input {...cvcProps()} />
+            <svg {...getCardImageProps({ images })} />
+            <input {...getCardNumberProps()} />
+            <input {...getExpiryDateProps()} />
+            <input {...getCVCProps()} />
           </PaymentInputsWrapper>
         </div>
       );
@@ -168,31 +175,31 @@ storiesOf('usePaymentInputs', module)
   })
   .add('using a UI library (Fannypack)', () => {
     function Component() {
-      const { meta, cardNumberProps, expiryDateProps, cvcProps } = usePaymentInputs();
+      const { meta, getCardNumberProps, getExpiryDateProps, getCVCProps } = usePaymentInputs();
       return (
         <FieldSet isHorizontal>
           <InputField
-            {...cardNumberProps()}
+            {...getCardNumberProps()}
             placeholder="0000 0000 0000 0000"
             label="Card number"
-            inputRef={cardNumberProps().ref}
+            inputRef={getCardNumberProps().ref}
             state={meta.erroredInputs.cardNumber && meta.touchedInputs.cardNumber ? 'danger' : undefined}
             validationText={meta.touchedInputs.cardNumber && meta.erroredInputs.cardNumber}
             maxWidth="15rem"
           />
           <InputField
-            {...expiryDateProps()}
+            {...getExpiryDateProps()}
             label="Expiry date"
-            inputRef={expiryDateProps().ref}
+            inputRef={getExpiryDateProps().ref}
             state={meta.erroredInputs.expiryDate && meta.touchedInputs.expiryDate ? 'danger' : undefined}
             validationText={meta.touchedInputs.expiryDate && meta.erroredInputs.expiryDate}
             maxWidth="8rem"
           />
           <InputField
-            {...cvcProps()}
+            {...getCVCProps()}
             placeholder="123"
             label="CVC"
-            inputRef={cvcProps().ref}
+            inputRef={getCVCProps().ref}
             state={meta.erroredInputs.cvc && meta.touchedInputs.cvc ? 'danger' : undefined}
             validationText={meta.touchedInputs.cvc && meta.erroredInputs.cvc}
             maxWidth="5rem"
@@ -205,14 +212,14 @@ storiesOf('usePaymentInputs', module)
   })
   .add('using a UI library (Bootstrap)', () => {
     function Component() {
-      const { meta, cardNumberProps, expiryDateProps, cvcProps } = usePaymentInputs();
+      const { meta, getCardNumberProps, getExpiryDateProps, getCVCProps } = usePaymentInputs();
       return (
         <Form>
           <Form.Row>
             <Form.Group as={Col} style={{ maxWidth: '15rem' }}>
               <Form.Label>Card number</Form.Label>
               <Form.Control
-                {...cardNumberProps()}
+                {...getCardNumberProps()}
                 isInvalid={meta.touchedInputs.cardNumber && meta.erroredInputs.cardNumber}
                 placeholder="0000 0000 0000 0000"
               />
@@ -221,7 +228,7 @@ storiesOf('usePaymentInputs', module)
             <Form.Group as={Col} style={{ maxWidth: '10rem' }}>
               <Form.Label>Expiry date</Form.Label>
               <Form.Control
-                {...expiryDateProps()}
+                {...getExpiryDateProps()}
                 isInvalid={meta.touchedInputs.expiryDate && meta.erroredInputs.expiryDate}
               />
               <Form.Control.Feedback type="invalid">{meta.erroredInputs.expiryDate}</Form.Control.Feedback>
@@ -229,7 +236,7 @@ storiesOf('usePaymentInputs', module)
             <Form.Group as={Col} style={{ maxWidth: '7rem' }}>
               <Form.Label>CVC</Form.Label>
               <Form.Control
-                {...cvcProps()}
+                {...getCVCProps()}
                 isInvalid={meta.touchedInputs.cvc && meta.erroredInputs.cvc}
                 placeholder="123"
               />
@@ -248,16 +255,16 @@ storiesOf('PaymentInputsContainer', module)
     function Component() {
       return (
         <PaymentInputsContainer>
-          {({ cardNumberProps, expiryDateProps, cvcProps }) => (
+          {({ getCardNumberProps, getExpiryDateProps, getCVCProps }) => (
             <div>
               <div>
-                <input {...cardNumberProps()} />
+                <input {...getCardNumberProps()} />
               </div>
               <div>
-                <input {...expiryDateProps()} />
+                <input {...getExpiryDateProps()} />
               </div>
               <div>
-                <input {...cvcProps()} />
+                <input {...getCVCProps()} />
               </div>
             </div>
           )}
@@ -271,12 +278,12 @@ storiesOf('PaymentInputsContainer', module)
     function Component() {
       return (
         <PaymentInputsContainer>
-          {({ cardNumberProps, expiryDateProps, cvcProps, cardImageProps, wrapperProps }) => (
+          {({ getCardNumberProps, getExpiryDateProps, getCVCProps, getCardImageProps, wrapperProps }) => (
             <PaymentInputsWrapper {...wrapperProps}>
-              <svg {...cardImageProps({ images })} />
-              <input {...cardNumberProps()} />
-              <input {...expiryDateProps()} />
-              <input {...cvcProps()} />
+              <svg {...getCardImageProps({ images })} />
+              <input {...getCardNumberProps()} />
+              <input {...getExpiryDateProps()} />
+              <input {...getCVCProps()} />
             </PaymentInputsWrapper>
           )}
         </PaymentInputsContainer>
@@ -289,13 +296,13 @@ storiesOf('PaymentInputsContainer', module)
     function Component() {
       return (
         <PaymentInputsContainer>
-          {({ cardNumberProps, expiryDateProps, cvcProps, zipProps, cardImageProps, wrapperProps }) => (
+          {({ getCardNumberProps, getExpiryDateProps, getCVCProps, getZIPProps, getCardImageProps, wrapperProps }) => (
             <PaymentInputsWrapper {...wrapperProps}>
-              <svg {...cardImageProps({ images })} />
-              <input {...cardNumberProps()} />
-              <input {...expiryDateProps()} />
-              <input {...cvcProps()} />
-              <input {...zipProps()} />
+              <svg {...getCardImageProps({ images })} />
+              <input {...getCardNumberProps()} />
+              <input {...getExpiryDateProps()} />
+              <input {...getCVCProps()} />
+              <input {...getZIPProps()} />
             </PaymentInputsWrapper>
           )}
         </PaymentInputsContainer>
@@ -308,11 +315,11 @@ storiesOf('PaymentInputsContainer', module)
     function Component() {
       return (
         <PaymentInputsContainer>
-          {({ cardNumberProps, expiryDateProps, cardImageProps, wrapperProps }) => (
+          {({ getCardNumberProps, getExpiryDateProps, getCardImageProps, wrapperProps }) => (
             <PaymentInputsWrapper {...wrapperProps}>
-              <svg {...cardImageProps({ images })} />
-              <input {...cardNumberProps()} />
-              <input {...expiryDateProps()} />
+              <svg {...getCardImageProps({ images })} />
+              <input {...getCardNumberProps()} />
+              <input {...getExpiryDateProps()} />
             </PaymentInputsWrapper>
           )}
         </PaymentInputsContainer>
@@ -337,12 +344,12 @@ storiesOf('PaymentInputsContainer', module)
             invalidCVC: 'El código de seguridad es inválido'
           }}
         >
-          {({ cardNumberProps, expiryDateProps, cardImageProps, cvcProps, wrapperProps }) => (
+          {({ getCardNumberProps, getExpiryDateProps, getCardImageProps, getCVCProps, wrapperProps }) => (
             <PaymentInputsWrapper {...wrapperProps}>
-              <svg {...cardImageProps({ images })} />
-              <input {...cardNumberProps()} />
-              <input {...expiryDateProps()} />
-              <input {...cvcProps()} />
+              <svg {...getCardImageProps({ images })} />
+              <input {...getCardNumberProps()} />
+              <input {...getExpiryDateProps()} />
+              <input {...getCVCProps()} />
             </PaymentInputsWrapper>
           )}
         </PaymentInputsContainer>
@@ -367,7 +374,7 @@ storiesOf('PaymentInputsContainer', module)
             invalidCVC: 'El código de seguridad es inválido'
           }}
         >
-          {({ cardNumberProps, expiryDateProps, cvcProps, cardImageProps, wrapperProps }) => (
+          {({ getCardNumberProps, getExpiryDateProps, getCVCProps, getCardImageProps, wrapperProps }) => (
             <PaymentInputsWrapper
               {...wrapperProps}
               styles={{
@@ -408,10 +415,10 @@ storiesOf('PaymentInputsContainer', module)
                 }
               }}
             >
-              <svg {...cardImageProps({ images })} />
-              <input {...cardNumberProps()} />
-              <input {...expiryDateProps()} />
-              <input {...cvcProps()} />
+              <svg {...getCardImageProps({ images })} />
+              <input {...getCardNumberProps()} />
+              <input {...getExpiryDateProps()} />
+              <input {...getCVCProps()} />
             </PaymentInputsWrapper>
           )}
         </PaymentInputsContainer>
