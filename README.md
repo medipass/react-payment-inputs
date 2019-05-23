@@ -24,9 +24,10 @@
       - [options.onChange](#optionsonchange)
       - [options.onError](#optionsonerror)
       - [options.onTouch](#optionsontouch)
-      - [`data`](#data)
-        - [cardNumberProps](#cardnumberprops)
-        - [expiryDateProps](#expirydateprops)
+    - [`data`](#data)
+      - [cardNumberProps](#cardnumberprops)
+      - [expiryDateProps](#expirydateprops)
+      - [cvcProps](#cvcprops)
 
 ## Installation
 
