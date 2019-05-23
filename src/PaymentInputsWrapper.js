@@ -5,7 +5,9 @@ const FieldWrapper = styled.div`
   display: inline-flex;
   flex-direction: column;
 
-  ${props => (props.hasErrored && props.styles.fieldWrapper ? props.styles.fieldWrapper.errored : undefined)};
+  & {
+    ${props => (props.hasErrored && props.styles.fieldWrapper ? props.styles.fieldWrapper.errored : undefined)};
+  }
 
   ${props => (props.styles.fieldWrapper ? props.styles.fieldWrapper.base : undefined)};
 `;
@@ -17,12 +19,14 @@ const InputWrapper = styled.div`
   display: flex;
   padding: 0.4em 0.6em;
 
-  ${props =>
-    props.hasErrored &&
-    css`
-      border-color: red;
-      ${props => props.styles.inputWrapper && props.styles.inputWrapper.errored};
-    `};
+  & {
+    ${props =>
+      props.hasErrored &&
+      css`
+        border-color: red;
+        ${props => props.styles.inputWrapper && props.styles.inputWrapper.errored};
+      `};
+  }
 
   & input {
     border: unset;
@@ -30,29 +34,39 @@ const InputWrapper = styled.div`
     padding: unset;
     outline: unset;
 
-    ${props => (props.hasErrored && props.styles.input ? props.styles.input.errored : undefined)};
+    & {
+      ${props => (props.hasErrored && props.styles.input ? props.styles.input.errored : undefined)};
+    }
 
     ${props => props.styles.input && props.styles.input.base};
   }
 
   & svg {
     margin-right: 0.6em;
-    ${props => props.styles.cardImage};
+    & {
+      ${props => props.styles.cardImage};
+    }
   }
 
   & input#cardnumber {
     width: 11rem;
-    ${props => props.styles.input && props.styles.input.cardNumber};
+    & {
+      ${props => props.styles.input && props.styles.input.cardNumber};
+    }
   }
 
   & input#expirydate {
     width: 4rem;
-    ${props => props.styles.input && props.styles.input.expiryDate};
+    & {
+      ${props => props.styles.input && props.styles.input.expiryDate};
+    }
   }
 
   & input#cvc {
     width: 2.5rem;
-    ${props => props.styles.input && props.styles.input.cvc};
+    & {
+      ${props => props.styles.input && props.styles.input.cvc};
+    }
   }
 
   & input#zip {
@@ -68,7 +82,10 @@ const ErrorText = styled.div`
   color: red;
   font-size: 0.75rem;
   margin-top: 0.25rem;
-  ${props => (props.styles.errorText ? props.styles.errorText.base : undefined)};
+
+  & {
+    ${props => (props.styles.errorText ? props.styles.errorText.base : undefined)};
+  }
 `;
 
 function PaymentInputsWrapper(props) {
