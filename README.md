@@ -7,6 +7,7 @@
 <p align="center"><img src="./wrapper.gif" width="500px"></img></p>
 
 - [React Payment Inputs](#react-payment-inputs)
+  - [Demos](#demos)
   - [Installation](#installation)
   - [Usage](#usage)
     - [With hooks](#with-hooks)
@@ -28,6 +29,15 @@
       - [cardNumberProps](#cardnumberprops)
       - [expiryDateProps](#expirydateprops)
       - [cvcProps](#cvcprops)
+  - [Usage with a form library](#usage-with-a-form-library)
+    - [Formik](#formik)
+    - [React Final Form](#react-final-form)
+    - [Redux Form](#redux-form)
+  - [Custom error messages](#custom-error-messages)
+  - [Global event handlers](#global-event-handlers)
+  - [Metadata](#metadata)
+  - [Customising the in-built style wrapper](#customising-the-in-built-style-wrapper)
+  - [License](#license)
 
 ## [Demos](#TODO)
 
