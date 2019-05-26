@@ -48,7 +48,7 @@
 - [Custom card images](#custom-card-images)
 - [License](#license)
 
-## [Demos](#TODO)
+## [Demos](https://medipass.github.io/react-payment-inputs)
 
 ## Installation
 
@@ -157,7 +157,7 @@ export default function PaymentInputs() {
 
 ### More examples
 
-- [Storybook](TODO)
+- [Storybook](https://medipass.github.io/react-payment-inputs)
   - [Source](./stories/index.stories.js)
 
 ## `data = usePaymentInputs(options)`
@@ -618,7 +618,7 @@ function PaymentForm() {
 }
 ```
 
-[See this example in Storybook](#TODO)
+[See this example in Storybook](https://medipass.github.io/react-payment-inputs/?path=/story/usepaymentinputs--using-a-form-library-formik)
 
 ### React Final Form
 
@@ -683,7 +683,7 @@ function PaymentForm() {
 }
 ```
 
-[See this example in Storybook](#TODO)
+[See this example in Storybook](https://medipass.github.io/react-payment-inputs/?path=/story/usepaymentinputs--using-a-form-library-react-final-form)
 
 ## Customising the in-built style wrapper
 
@@ -756,7 +756,7 @@ function PaymentForm() {
 }
 ```
 
-[See the example on Storybook](#TODO)
+[See the example on Storybook](https://medipass.github.io/react-payment-inputs/?path=/story/usepaymentinputs--styled-wrapper-with-custom-styling)
 
 ## Custom card images
 
