@@ -2,62 +2,50 @@
 
 > A zero-dependency React Hook & Container to help with payment card input fields.
 
-<p align="center"><img src="./react-payment-inputs.png" width="500px" style="margin-bottom: 1rem; margin-top: 1rem;"></img></p>
+<p align="center"><img src="./assets/react-payment-inputs.png" width="500px" style="margin-bottom: 1rem; margin-top: 1rem;"></img></p>
 
-<p align="center"><img src="./wrapper.gif" width="500px"></img></p>
+<p align="center"><img src="./assets/wrapper.gif" width="500px"></img></p>
 
-- [React Payment Inputs](#react-payment-inputs)
-  - [Demos](#demos)
-  - [Installation](#installation)
-  - [Usage](#usage)
-    - [With hooks](#with-hooks)
-    - [With render props](#with-render-props)
-    - [Using the built-in styled wrapper](#using-the-built-in-styled-wrapper)
-    - [More examples](#more-examples)
-  - [`data = usePaymentInputs(options)`](#data--usepaymentinputsoptions)
-    - [options](#options)
-      - [options.errorMessages](#optionserrormessages)
-        - [Example](#example)
-      - [options.onBlur](#optionsonblur)
-      - [options.onChange](#optionsonchange)
-      - [options.onError](#optionsonerror)
-      - [options.onTouch](#optionsontouch)
-    - [`data`](#data)
-      - [getCardNumberProps](#getcardnumberprops)
-        - [Example snippet](#example-snippet)
-      - [getExpiryDateProps](#getexpirydateprops)
-        - [Example snippet](#example-snippet-1)
-      - [getCVCProps](#getcvcprops)
-        - [Example snippet](#example-snippet-2)
-      - [getZIPProps](#getzipprops)
-        - [Example snippet](#example-snippet-3)
-      - [getCardImageProps](#getcardimageprops)
-        - [Example snippet](#example-snippet-4)
-      - [meta.cardType](#metacardtype)
-        - [Example snippet](#example-snippet-5)
-      - [meta.error](#metaerror)
-        - [Example snippet](#example-snippet-6)
-      - [meta.isTouched](#metaistouched)
-      - [meta.erroredInputs](#metaerroredinputs)
-        - [Example snippet](#example-snippet-7)
-      - [meta.touchedInputs](#metatouchedinputs)
-        - [Example snippet](#example-snippet-8)
-      - [meta.focused](#metafocused)
-      - [wrapperProps](#wrapperprops)
-  - [`<PaymentInputsWrapper>` props](#paymentinputswrapper-props)
-    - [styles](#styles)
-      - [Schema](#schema)
-    - [errorTextProps](#errortextprops)
-    - [inputWrapperProps](#inputwrapperprops)
-  - [Using a third-party UI library](#using-a-third-party-ui-library)
-    - [Fannypack](#fannypack)
-    - [Bootstrap](#bootstrap)
-  - [Form library examples](#form-library-examples)
-    - [Formik](#formik)
-    - [React Final Form](#react-final-form)
-  - [Customising the in-built style wrapper](#customising-the-in-built-style-wrapper)
-  - [Custom card images](#custom-card-images)
-  - [License](#license)
+- [Demos](#demos)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [With hooks](#with-hooks)
+  - [With render props](#with-render-props)
+  - [Using the built-in styled wrapper](#using-the-built-in-styled-wrapper)
+  - [More examples](#more-examples)
+- [`data = usePaymentInputs(options)`](#data--usepaymentinputsoptions)
+  - [options](#options)
+    - [options.errorMessages](#optionserrormessages)
+    - [options.onBlur](#optionsonblur)
+    - [options.onChange](#optionsonchange)
+    - [options.onError](#optionsonerror)
+    - [options.onTouch](#optionsontouch)
+  - [`data`](#data)
+    - [getCardNumberProps](#getcardnumberprops)
+    - [getExpiryDateProps](#getexpirydateprops)
+    - [getCVCProps](#getcvcprops)
+    - [getZIPProps](#getzipprops)
+    - [getCardImageProps](#getcardimageprops)
+    - [meta.cardType](#metacardtype)
+    - [meta.error](#metaerror)
+    - [meta.isTouched](#metaistouched)
+    - [meta.erroredInputs](#metaerroredinputs)
+    - [meta.touchedInputs](#metatouchedinputs)
+    - [meta.focused](#metafocused)
+    - [wrapperProps](#wrapperprops)
+- [`<PaymentInputsWrapper>` props](#paymentinputswrapper-props)
+  - [styles](#styles)
+  - [errorTextProps](#errortextprops)
+  - [inputWrapperProps](#inputwrapperprops)
+- [Using a third-party UI library](#using-a-third-party-ui-library)
+  - [Fannypack](#fannypack)
+  - [Bootstrap](#bootstrap)
+- [Form library examples](#form-library-examples)
+  - [Formik](#formik)
+  - [React Final Form](#react-final-form)
+- [Customising the in-built style wrapper](#customising-the-in-built-style-wrapper)
+- [Custom card images](#custom-card-images)
+- [License](#license)
 
 ## [Demos](#TODO)
 
@@ -75,7 +63,7 @@ yarn add react-payment-inputs
 
 ## Usage
 
-<p align="center"><img src="./basic.gif" width="300px"></img></p>
+<p align="center"><img src="./assets/basic.gif" width="300px"></img></p>
 
 By default (as seen above), React Payment Inputs does not come with built-in styling meaning that you can easily adapt React Payment Inputs to your own design system.
 
@@ -139,7 +127,7 @@ export default function PaymentInputs() {
 
 By default, React Payment Inputs does not have built-in styling for it's inputs. However, React Payment Inputs comes with a styled wrapper which combines the card number, expiry & CVC fields seen below:
 
-<p align="center"><img src="./wrapper.gif" width="500px"></img></p>
+<p align="center"><img src="./assets/wrapper.gif" width="500px"></img></p>
 
 ```jsx
 import React from 'react';
@@ -449,7 +437,7 @@ React Payment Inputs allows you to integrate into pretty much any React UI libra
 
 ### Fannypack
 
-<p align="center"><img src="./fannypack.gif" width="500px"></img></p>
+<p align="center"><img src="./assets/fannypack.gif" width="500px"></img></p>
 
 ```jsx
 import React from 'react';
@@ -503,7 +491,7 @@ export default function PaymentInputs() {
 
 ### Bootstrap
 
-<p align="center"><img src="./bootstrap.gif" width="500px"></img></p>
+<p align="center"><img src="./assets/bootstrap.gif" width="500px"></img></p>
 
 ```jsx
 import React from 'react';
