@@ -131,24 +131,26 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
 
       props.onKeyPress && props.onKeyPress(e);
 
-      if (!utils.validator.isNumeric(e)) {
-        e.preventDefault();
-      }
-      if (utils.validator.hasCardNumberReachedMaxLength(cardNumber)) {
-        e.preventDefault();
+      if (e.keyCode !== utils.ENTER_KEY_CODE) {
+        if (!utils.validator.isNumeric(e)) {
+          e.preventDefault();
+        }
+        if (utils.validator.hasCardNumberReachedMaxLength(cardNumber)) {
+          e.preventDefault();
+        }
       }
     };
   }, []);
 
   const getCardNumberProps = React.useCallback(
-    (props = {}) => ({
+    ({ refKey, ...props } = {}) => ({
       'aria-label': 'Card number',
       autoComplete: 'cc-number',
-      id: 'cardnumber',
-      name: 'cardnumber',
+      id: 'cardNumber',
+      name: 'cardNumber',
       placeholder: 'Card number',
       type: 'tel',
-      ref: cardNumberField,
+      [refKey || 'ref']: cardNumberField,
       ...props,
       onBlur: handleBlurCardNumber(props),
       onChange: handleChangeCardNumber(props),
@@ -221,24 +223,26 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
 
       props.onKeyPress && props.onKeyPress(e);
 
-      if (!utils.validator.isNumeric(e)) {
-        e.preventDefault();
-      }
-      if (expiryDate.length >= 4) {
-        e.preventDefault();
+      if (e.keyCode !== utils.ENTER_KEY_CODE) {
+        if (!utils.validator.isNumeric(e)) {
+          e.preventDefault();
+        }
+        if (expiryDate.length >= 4) {
+          e.preventDefault();
+        }
       }
     };
   }, []);
 
   const getExpiryDateProps = React.useCallback(
-    (props = {}) => ({
+    ({ refKey, ...props } = {}) => ({
       'aria-label': 'Expiry date in format MM YY',
       autoComplete: 'cc-exp',
-      id: 'expirydate',
-      name: 'cc-exp',
+      id: 'expiryDate',
+      name: 'expiryDate',
       placeholder: 'MM/YY',
       type: 'tel',
-      ref: expiryDateField,
+      [refKey || 'ref']: expiryDateField,
       ...props,
       onBlur: handleBlurExpiryDate(props),
       onChange: handleChangeExpiryDate(props),
@@ -316,27 +320,29 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
 
       props.onKeyPress && props.onKeyPress(e);
 
-      if (!utils.validator.isNumeric(e)) {
-        e.preventDefault();
-      }
-      if (cardType && cvc.length >= cardType.code.length) {
-        e.preventDefault();
-      }
-      if (cvc.length >= 4) {
-        e.preventDefault();
+      if (e.keyCode !== utils.ENTER_KEY_CODE) {
+        if (!utils.validator.isNumeric(e)) {
+          e.preventDefault();
+        }
+        if (cardType && cvc.length >= cardType.code.length) {
+          e.preventDefault();
+        }
+        if (cvc.length >= 4) {
+          e.preventDefault();
+        }
       }
     };
   }, []);
 
   const getCVCProps = React.useCallback(
-    (props = {}) => ({
+    ({ refKey, ...props } = {}) => ({
       'aria-label': 'CVC',
       autoComplete: 'cc-csc',
       id: 'cvc',
       name: 'cvc',
       placeholder: cardType ? cardType.code.name : 'CVC',
       type: 'tel',
-      ref: cvcField,
+      [refKey || 'ref']: cvcField,
       ...props,
       onBlur: handleBlurCVC(props),
       onChange: handleChangeCVC(props, { cardType }),
@@ -402,21 +408,23 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
     return e => {
       props.onKeyPress && props.onKeyPress(e);
 
-      if (!utils.validator.isNumeric(e)) {
-        e.preventDefault();
+      if (e.keyCode !== utils.ENTER_KEY_CODE) {
+        if (!utils.validator.isNumeric(e)) {
+          e.preventDefault();
+        }
       }
     };
   }, []);
 
   const getZIPProps = React.useCallback(
-    (props = {}) => ({
+    ({ refKey, ...props } = {}) => ({
       autoComplete: 'off',
       id: 'zip',
       maxLength: '6',
       name: 'zip',
       placeholder: 'ZIP',
       type: 'tel',
-      ref: zipField,
+      [refKey || 'ref']: zipField,
       ...props,
       onBlur: handleBlurZIP(props),
       onChange: handleChangeZIP(props),

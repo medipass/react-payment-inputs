@@ -3,6 +3,7 @@ import * as formatter from './formatter';
 import * as validator from './validator';
 
 export const BACKSPACE_KEY_CODE = 8;
+export const ENTER_KEY_CODE = 0;
 
 export const isHighlighted = () => (window.getSelection() || { type: undefined }).type === 'Range';
 
@@ -11,5 +12,6 @@ export default {
   formatter,
   validator,
   BACKSPACE_KEY_CODE,
+  ENTER_KEY_CODE,
   isHighlighted
 };

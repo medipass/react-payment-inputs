@@ -1,8 +1,9 @@
 import React from 'react';
-
 import { storiesOf } from '@storybook/react';
-import { LayoutSet, css, FieldSet, InputField } from 'fannypack';
-import { Col, Form } from 'react-bootstrap';
+import { Formik, Field as FormikField } from 'formik';
+import { Form, Field as FinalFormField } from 'react-final-form';
+import { css, Button, FieldSet, InputField } from 'fannypack';
+import { Col, Form as BSForm } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 
 import { PaymentInputsContainer, PaymentInputsWrapper, usePaymentInputs } from '../src';
@@ -12,9 +13,8 @@ storiesOf('usePaymentInputs', module)
   .add('basic (no styles)', () => {
     function Component() {
       const { meta, getCardNumberProps, getExpiryDateProps, getCVCProps } = usePaymentInputs();
-      console.log(meta);
       return (
-        <LayoutSet spacing="major-1">
+        <div>
           <div>
             <input {...getCardNumberProps()} />
           </div>
@@ -25,7 +25,7 @@ storiesOf('usePaymentInputs', module)
             <input {...getCVCProps()} />
           </div>
           {meta.error && meta.isTouched && <div>{meta.error}</div>}
-        </LayoutSet>
+        </div>
       );
     }
 
@@ -33,7 +33,13 @@ storiesOf('usePaymentInputs', module)
   })
   .add('styled wrapper', () => {
     function Component() {
-      const { getCardNumberProps, getExpiryDateProps, getCVCProps, getCardImageProps, wrapperProps } = usePaymentInputs();
+      const {
+        getCardNumberProps,
+        getExpiryDateProps,
+        getCVCProps,
+        getCardImageProps,
+        wrapperProps
+      } = usePaymentInputs();
       return (
         <div>
           <PaymentInputsWrapper {...wrapperProps}>
@@ -50,7 +56,14 @@ storiesOf('usePaymentInputs', module)
   })
   .add('styled wrapper (with ZIP)', () => {
     function Component() {
-      const { getCardNumberProps, getExpiryDateProps, getCVCProps, getZIPProps, getCardImageProps, wrapperProps } = usePaymentInputs();
+      const {
+        getCardNumberProps,
+        getExpiryDateProps,
+        getCVCProps,
+        getZIPProps,
+        getCardImageProps,
+        wrapperProps
+      } = usePaymentInputs();
       return (
         <div>
           <PaymentInputsWrapper {...wrapperProps}>
@@ -84,7 +97,13 @@ storiesOf('usePaymentInputs', module)
   })
   .add('styled wrapper (with custom styling)', () => {
     function Component() {
-      const { getCardNumberProps, getExpiryDateProps, getCVCProps, getCardImageProps, wrapperProps } = usePaymentInputs();
+      const {
+        getCardNumberProps,
+        getExpiryDateProps,
+        getCVCProps,
+        getCardImageProps,
+        wrapperProps
+      } = usePaymentInputs();
       return (
         <div>
           <PaymentInputsWrapper
@@ -146,19 +165,21 @@ storiesOf('usePaymentInputs', module)
   })
   .add('custom error messages', () => {
     function Component() {
-      const { getCardNumberProps, getExpiryDateProps, getCVCProps, getCardImageProps, wrapperProps } = usePaymentInputs({
-        errorMessages: {
-          emptyCardNumber: 'El número de la tarjeta es inválido',
-          invalidCardNumber: 'El número de la tarjeta es inválido',
-          emptyExpiryDate: 'La fecha de expiración es inválida',
-          monthOutOfRange: 'El mes de expiración debe estar entre 01 y 12',
-          yearOutOfRange: 'El año de expiración no puede estar en el pasado',
-          dateOutOfRange: 'La fecha de expiración no puede estar en el pasado',
-          invalidExpiryDate: 'La fecha de expiración es inválida',
-          emptyCVC: 'El código de seguridad es inválido',
-          invalidCVC: 'El código de seguridad es inválido'
+      const { getCardNumberProps, getExpiryDateProps, getCVCProps, getCardImageProps, wrapperProps } = usePaymentInputs(
+        {
+          errorMessages: {
+            emptyCardNumber: 'El número de la tarjeta es inválido',
+            invalidCardNumber: 'El número de la tarjeta es inválido',
+            emptyExpiryDate: 'La fecha de expiración es inválida',
+            monthOutOfRange: 'El mes de expiración debe estar entre 01 y 12',
+            yearOutOfRange: 'El año de expiración no puede estar en el pasado',
+            dateOutOfRange: 'La fecha de expiración no puede estar en el pasado',
+            invalidExpiryDate: 'La fecha de expiración es inválida',
+            emptyCVC: 'El código de seguridad es inválido',
+            invalidCVC: 'El código de seguridad es inválido'
+          }
         }
-      });
+      );
       return (
         <div>
           <PaymentInputsWrapper {...wrapperProps}>
@@ -179,27 +200,24 @@ storiesOf('usePaymentInputs', module)
       return (
         <FieldSet isHorizontal>
           <InputField
-            {...getCardNumberProps()}
+            {...getCardNumberProps({ refKey: 'inputRef' })}
             placeholder="0000 0000 0000 0000"
             label="Card number"
-            inputRef={getCardNumberProps().ref}
             state={meta.erroredInputs.cardNumber && meta.touchedInputs.cardNumber ? 'danger' : undefined}
             validationText={meta.touchedInputs.cardNumber && meta.erroredInputs.cardNumber}
             maxWidth="15rem"
           />
           <InputField
-            {...getExpiryDateProps()}
+            {...getExpiryDateProps({ refKey: 'inputRef' })}
             label="Expiry date"
-            inputRef={getExpiryDateProps().ref}
             state={meta.erroredInputs.expiryDate && meta.touchedInputs.expiryDate ? 'danger' : undefined}
             validationText={meta.touchedInputs.expiryDate && meta.erroredInputs.expiryDate}
             maxWidth="8rem"
           />
           <InputField
-            {...getCVCProps()}
+            {...getCVCProps({ refKey: 'inputRef' })}
             placeholder="123"
             label="CVC"
-            inputRef={getCVCProps().ref}
             state={meta.erroredInputs.cvc && meta.touchedInputs.cvc ? 'danger' : undefined}
             validationText={meta.touchedInputs.cvc && meta.erroredInputs.cvc}
             maxWidth="5rem"
@@ -214,35 +232,158 @@ storiesOf('usePaymentInputs', module)
     function Component() {
       const { meta, getCardNumberProps, getExpiryDateProps, getCVCProps } = usePaymentInputs();
       return (
-        <Form>
-          <Form.Row>
-            <Form.Group as={Col} style={{ maxWidth: '15rem' }}>
-              <Form.Label>Card number</Form.Label>
-              <Form.Control
+        <BSForm>
+          <BSForm.Row>
+            <BSForm.Group as={Col} style={{ maxWidth: '15rem' }}>
+              <BSForm.Label>Card number</BSForm.Label>
+              <BSForm.Control
                 {...getCardNumberProps()}
                 isInvalid={meta.touchedInputs.cardNumber && meta.erroredInputs.cardNumber}
                 placeholder="0000 0000 0000 0000"
               />
-              <Form.Control.Feedback type="invalid">{meta.erroredInputs.cardNumber}</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group as={Col} style={{ maxWidth: '10rem' }}>
-              <Form.Label>Expiry date</Form.Label>
-              <Form.Control
+              <BSForm.Control.Feedback type="invalid">{meta.erroredInputs.cardNumber}</BSForm.Control.Feedback>
+            </BSForm.Group>
+            <BSForm.Group as={Col} style={{ maxWidth: '10rem' }}>
+              <BSForm.Label>Expiry date</BSForm.Label>
+              <BSForm.Control
                 {...getExpiryDateProps()}
                 isInvalid={meta.touchedInputs.expiryDate && meta.erroredInputs.expiryDate}
               />
-              <Form.Control.Feedback type="invalid">{meta.erroredInputs.expiryDate}</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group as={Col} style={{ maxWidth: '7rem' }}>
-              <Form.Label>CVC</Form.Label>
-              <Form.Control
+              <BSForm.Control.Feedback type="invalid">{meta.erroredInputs.expiryDate}</BSForm.Control.Feedback>
+            </BSForm.Group>
+            <BSForm.Group as={Col} style={{ maxWidth: '7rem' }}>
+              <BSForm.Label>CVC</BSForm.Label>
+              <BSForm.Control
                 {...getCVCProps()}
                 isInvalid={meta.touchedInputs.cvc && meta.erroredInputs.cvc}
                 placeholder="123"
               />
-              <Form.Control.Feedback type="invalid">{meta.erroredInputs.cvc}</Form.Control.Feedback>
-            </Form.Group>
-          </Form.Row>
+              <BSForm.Control.Feedback type="invalid">{meta.erroredInputs.cvc}</BSForm.Control.Feedback>
+            </BSForm.Group>
+          </BSForm.Row>
+        </BSForm>
+      );
+    }
+
+    return <Component />;
+  })
+  .add('using a form library (Formik)', () => {
+    function Component() {
+      const {
+        meta,
+        getCardImageProps,
+        getCardNumberProps,
+        getExpiryDateProps,
+        getCVCProps,
+        wrapperProps
+      } = usePaymentInputs();
+
+      return (
+        <Formik
+          initialValues={{
+            cardNumber: '',
+            expiryDate: '',
+            cvc: ''
+          }}
+          onSubmit={data => console.log(data)}
+          validate={() => {
+            let errors = {};
+            if (meta.erroredInputs.cardNumber) {
+              errors.cardNumber = meta.erroredInputs.cardNumber;
+            }
+            if (meta.erroredInputs.expiryDate) {
+              errors.expiryDate = meta.erroredInputs.expiryDate;
+            }
+            if (meta.erroredInputs.cvc) {
+              errors.cvc = meta.erroredInputs.cvc;
+            }
+            return errors;
+          }}
+        >
+          {({ handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
+              <div>
+                <PaymentInputsWrapper {...wrapperProps}>
+                  <svg {...getCardImageProps({ images })} />
+                  <FormikField name="cardNumber">
+                    {({ field }) => (
+                      <input {...getCardNumberProps({ onBlur: field.onBlur, onChange: field.onChange })} />
+                    )}
+                  </FormikField>
+                  <FormikField name="expiryDate">
+                    {({ field }) => (
+                      <input {...getExpiryDateProps({ onBlur: field.onBlur, onChange: field.onChange })} />
+                    )}
+                  </FormikField>
+                  <FormikField name="cvc">
+                    {({ field }) => <input {...getCVCProps({ onBlur: field.onBlur, onChange: field.onChange })} />}
+                  </FormikField>
+                </PaymentInputsWrapper>
+              </div>
+              <Button marginTop="major-2" type="submit">
+                Submit
+              </Button>
+            </form>
+          )}
+        </Formik>
+      );
+    }
+
+    return <Component />;
+  })
+  .add('using a form library (React Final Form)', () => {
+    function Component() {
+      const {
+        meta,
+        getCardImageProps,
+        getCardNumberProps,
+        getExpiryDateProps,
+        getCVCProps,
+        wrapperProps
+      } = usePaymentInputs();
+
+      return (
+        <Form
+          onSubmit={data => console.log(data)}
+          validate={() => {
+            let errors = {};
+            if (meta.erroredInputs.cardNumber) {
+              errors.cardNumber = meta.erroredInputs.cardNumber;
+            }
+            if (meta.erroredInputs.expiryDate) {
+              errors.expiryDate = meta.erroredInputs.expiryDate;
+            }
+            if (meta.erroredInputs.cvc) {
+              errors.cvc = meta.erroredInputs.cvc;
+            }
+            return errors;
+          }}
+        >
+          {({ handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
+              <div>
+                <PaymentInputsWrapper {...wrapperProps}>
+                  <svg {...getCardImageProps({ images })} />
+                  <FinalFormField name="cardNumber">
+                    {({ input }) => (
+                      <input {...getCardNumberProps({ onBlur: input.onBlur, onChange: input.onChange })} />
+                    )}
+                  </FinalFormField>
+                  <FinalFormField name="expiryDate">
+                    {({ input }) => (
+                      <input {...getExpiryDateProps({ onBlur: input.onBlur, onChange: input.onChange })} />
+                    )}
+                  </FinalFormField>
+                  <FinalFormField name="cvc">
+                    {({ input }) => <input {...getCVCProps({ onBlur: input.onBlur, onChange: input.onChange })} />}
+                  </FinalFormField>
+                </PaymentInputsWrapper>
+              </div>
+              <Button marginTop="major-2" type="submit">
+                Submit
+              </Button>
+            </form>
+          )}
         </Form>
       );
     }
@@ -361,19 +502,7 @@ storiesOf('PaymentInputsContainer', module)
   .add('styled wrapper (with custom styling)', () => {
     function Component() {
       return (
-        <PaymentInputsContainer
-          errorMessages={{
-            emptyCardNumber: 'El número de la tarjeta es inválido',
-            invalidCardNumber: 'El número de la tarjeta es inválido',
-            emptyExpiryDate: 'La fecha de expiración es inválida',
-            monthOutOfRange: 'El mes de expiración debe estar entre 01 y 12',
-            yearOutOfRange: 'El año de expiración no puede estar en el pasado',
-            dateOutOfRange: 'La fecha de expiración no puede estar en el pasado',
-            invalidExpiryDate: 'La fecha de expiración es inválida',
-            emptyCVC: 'El código de seguridad es inválido',
-            invalidCVC: 'El código de seguridad es inválido'
-          }}
-        >
+        <PaymentInputsContainer>
           {({ getCardNumberProps, getExpiryDateProps, getCVCProps, getCardImageProps, wrapperProps }) => (
             <PaymentInputsWrapper
               {...wrapperProps}

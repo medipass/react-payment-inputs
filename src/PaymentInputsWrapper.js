@@ -59,14 +59,14 @@ const InputWrapper = styled.div`
     }
   }
 
-  & input#cardnumber {
+  & input#cardNumber {
     width: 11rem;
     & {
       ${props => props.styles.input && props.styles.input.cardNumber};
     }
   }
 
-  & input#expirydate {
+  & input#expiryDate {
     width: 4rem;
     & {
       ${props => props.styles.input && props.styles.input.expiryDate};
