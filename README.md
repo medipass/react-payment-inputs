@@ -50,6 +50,10 @@
 
 ## [Demos](https://medipass.github.io/react-payment-inputs)
 
+## Requirements
+
+Ensure you are running on a hooks-compatible version of React (v16.8 & above).
+
 ## Installation
 
 ```
