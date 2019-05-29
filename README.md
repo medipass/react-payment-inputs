@@ -53,14 +53,16 @@
 ## Installation
 
 ```
-npm install react-payment-inputs --save
+npm install react-payment-inputs styled-components --save
 ```
 
 or install with [Yarn](https://yarnpkg.com) if you prefer:
 
 ```
-yarn add react-payment-inputs
+yarn add react-payment-inputs styled-components
 ```
+
+> React Payment Inputs requires [styled-components](https://styled-components.com) to be installed as a dependency.
 
 ## Usage
 
