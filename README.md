@@ -48,19 +48,25 @@
 - [Custom card images](#custom-card-images)
 - [License](#license)
 
-## [Demos](#TODO)
+## [Demos](https://medipass.github.io/react-payment-inputs)
+
+## Requirements
+
+Ensure you are running on a hooks-compatible version of React (v16.8 & above).
 
 ## Installation
 
 ```
-npm install react-payment-inputs --save
+npm install react-payment-inputs styled-components --save
 ```
 
 or install with [Yarn](https://yarnpkg.com) if you prefer:
 
 ```
-yarn add react-payment-inputs
+yarn add react-payment-inputs styled-components
 ```
+
+> React Payment Inputs requires [styled-components](https://styled-components.com) to be installed as a dependency.
 
 ## Usage
 
@@ -157,7 +163,7 @@ export default function PaymentInputs() {
 
 ### More examples
 
-- [Storybook](TODO)
+- [Storybook](https://medipass.github.io/react-payment-inputs)
   - [Source](./stories/index.stories.js)
 
 ## `data = usePaymentInputs(options)`
@@ -618,7 +624,7 @@ function PaymentForm() {
 }
 ```
 
-[See this example in Storybook](#TODO)
+[See this example in Storybook](https://medipass.github.io/react-payment-inputs/?path=/story/usepaymentinputs--using-a-form-library-formik)
 
 ### React Final Form
 
@@ -683,7 +689,7 @@ function PaymentForm() {
 }
 ```
 
-[See this example in Storybook](#TODO)
+[See this example in Storybook](https://medipass.github.io/react-payment-inputs/?path=/story/usepaymentinputs--using-a-form-library-react-final-form)
 
 ## Customising the in-built style wrapper
 
@@ -756,7 +762,7 @@ function PaymentForm() {
 }
 ```
 
-[See the example on Storybook](#TODO)
+[See the example on Storybook](https://medipass.github.io/react-payment-inputs/?path=/story/usepaymentinputs--styled-wrapper-with-custom-styling)
 
 ## Custom card images
 

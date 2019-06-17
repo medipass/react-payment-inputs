@@ -2,11 +2,6 @@ import React from 'react';
 
 import utils from './utils';
 
-/**
- * TODO:
- *  - doco
- */
-
 export default function usePaymentCard({ errorMessages, onBlur, onChange, onError, onTouch } = {}) {
   const cardNumberField = React.useRef();
   const expiryDateField = React.useRef();
