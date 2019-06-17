@@ -46,6 +46,7 @@ const InputWrapper = styled.div`
     margin: unset;
     padding: unset;
     outline: unset;
+    font-size: inherit;
 
     & {
       ${props => (props.hasErrored && props.styles.input ? props.styles.input.errored : undefined)};
