@@ -13,10 +13,12 @@ const FieldWrapper = styled.div`
 `;
 const InputWrapper = styled.div`
   align-items: center;
+  background-color: white;
   border: 1px solid #bdbdbd;
   box-shadow: inset 0px 1px 2px #e5e5e5;
   border-radius: 0.2em;
   display: flex;
+  height: 2.5em;
   padding: 0.4em 0.6em;
 
   & {
@@ -60,28 +62,28 @@ const InputWrapper = styled.div`
   }
 
   & input#cardNumber {
-    width: 11rem;
+    width: 11em;
     & {
       ${props => props.styles.input && props.styles.input.cardNumber};
     }
   }
 
   & input#expiryDate {
-    width: 4rem;
+    width: 4em;
     & {
       ${props => props.styles.input && props.styles.input.expiryDate};
     }
   }
 
   & input#cvc {
-    width: 2.5rem;
+    width: 2.5em;
     & {
       ${props => props.styles.input && props.styles.input.cvc};
     }
   }
 
   & input#zip {
-    width: 4rem;
+    width: 4em;
     & {
       ${props => props.styles.input && props.styles.input.zip};
     }
