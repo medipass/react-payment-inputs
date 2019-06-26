@@ -96,6 +96,7 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
         // Due to the card number formatting, the selection cursor will fall to the end of
         // the input field. Here, we want to reposition the cursor to the correct place.
         requestAnimationFrame(() => {
+          if (document.activeElement !== cardNumberField.current) return;
           if (cardNumberField.current.value[cursorPosition - 1] === ' ') {
             cursorPosition = cursorPosition + 1;
           }
