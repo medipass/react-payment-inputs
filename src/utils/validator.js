@@ -77,11 +77,14 @@ export const getExpiryDateError = (expiryDate, { errorMessages = {} } = {}) => {
   }
   return errorMessages.invalidExpiryDate || INVALID_EXPIRY_DATE;
 };
-export const getCVCError = (expiryDate, { cardType, errorMessages = {} } = {}) => {
-  if (!expiryDate) {
+export const getCVCError = (cvc, { cardType, errorMessages = {} } = {}) => {
+  if (!cvc) {
     return errorMessages.emptyCVC || EMPTY_CVC;
   }
-  if (cardType && expiryDate.length !== cardType.code.length) {
+  if (cvc.length < 3) {
+    return errorMessages.invalidCVC || INVALID_CVC;
+  }
+  if (cardType && cvc.length !== cardType.code.length) {
     return errorMessages.invalidCVC || INVALID_CVC;
   }
   return;
