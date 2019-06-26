@@ -449,7 +449,8 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
   );
   /** ====== END: CARD IMAGE STUFF ====== */
 
-  React.useEffect(
+  // Set default field errors
+  React.useLayoutEffect(
     () => {
       if (zipField.current) {
         const zipError = utils.validator.getZIPError(zipField.current.value, { errorMessages });
@@ -471,12 +472,21 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
     [errorMessages, setInputError]
   );
 
-  React.useEffect(() => {
+  // Format default values
+  React.useLayoutEffect(() => {
     if (cardNumberField.current) {
       cardNumberField.current.value = utils.formatter.formatCardNumber(cardNumberField.current.value);
     }
     if (expiryDateField.current) {
       expiryDateField.current.value = utils.formatter.formatExpiry({ target: expiryDateField.current });
+    }
+  }, []);
+
+  // Set default card type
+  React.useLayoutEffect(() => {
+    if (cardNumberField.current) {
+      const cardType = utils.cardTypes.getCardTypeByValue(cardNumberField.current.value);
+      setCardType(cardType);
     }
   }, []);
 
