@@ -173,8 +173,6 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
   const handleChangeExpiryDate = React.useCallback(
     (props = {}) => {
       return e => {
-        const expiryDate = e.target.value;
-
         setInputTouched('expiryDate', false);
 
         props.onChange && props.onChange(e);
@@ -182,7 +180,7 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
 
         expiryDateField.current.value = utils.formatter.formatExpiry(e);
 
-        const expiryDateError = utils.validator.getExpiryDateError(expiryDate, { errorMessages });
+        const expiryDateError = utils.validator.getExpiryDateError(expiryDateField.current.value, { errorMessages });
         if (!expiryDateError) {
           cvcField.current && cvcField.current.focus();
         }
