@@ -183,19 +183,23 @@ Set custom error messages for the inputs.
 ##### Example
 
 ```js
-const { ... } = usePaymentInputs({
-  errorMessages: {
-    emptyCardNumber: 'El número de la tarjeta es inválido',
-    invalidCardNumber: 'El número de la tarjeta es inválido',
-    emptyExpiryDate: 'La fecha de expiración es inválida',
-    monthOutOfRange: 'El mes de expiración debe estar entre 01 y 12',
-    yearOutOfRange: 'El año de expiración no puede estar en el pasado',
-    dateOutOfRange: 'La fecha de expiración no puede estar en el pasado',
-    invalidExpiryDate: 'La fecha de expiración es inválida',
-    emptyCVC: 'El código de seguridad es inválido',
-    invalidCVC: 'El código de seguridad es inválido'
-  }
-})
+const ERROR_MESSAGES = {
+  emptyCardNumber: 'El número de la tarjeta es inválido',
+  invalidCardNumber: 'El número de la tarjeta es inválido',
+  emptyExpiryDate: 'La fecha de expiración es inválida',
+  monthOutOfRange: 'El mes de expiración debe estar entre 01 y 12',
+  yearOutOfRange: 'El año de expiración no puede estar en el pasado',
+  dateOutOfRange: 'La fecha de expiración no puede estar en el pasado',
+  invalidExpiryDate: 'La fecha de expiración es inválida',
+  emptyCVC: 'El código de seguridad es inválido',
+  invalidCVC: 'El código de seguridad es inválido'
+}
+
+export default function MyComponent() {
+  const { ... } = usePaymentInputs({
+    errorMessages: ERROR_MESSAGES
+  });
+}
 ```
 
 #### options.onBlur
