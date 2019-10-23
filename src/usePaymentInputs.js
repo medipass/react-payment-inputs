@@ -87,11 +87,11 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
 
         setInputTouched('cardNumber', false);
 
-        props.onChange && props.onChange(e);
-        onChange && onChange(e);
-
         // @ts-ignore
         cardNumberField.current.value = utils.formatter.formatCardNumber(cardNumber);
+
+        props.onChange && props.onChange(e);
+        onChange && onChange(e);
 
         // Due to the card number formatting, the selection cursor will fall to the end of
         // the input field. Here, we want to reposition the cursor to the correct place.
