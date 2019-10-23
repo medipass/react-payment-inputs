@@ -175,10 +175,10 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
       return e => {
         setInputTouched('expiryDate', false);
 
+        expiryDateField.current.value = utils.formatter.formatExpiry(e);
+
         props.onChange && props.onChange(e);
         onChange && onChange(e);
-
-        expiryDateField.current.value = utils.formatter.formatExpiry(e);
 
         const expiryDateError = utils.validator.getExpiryDateError(expiryDateField.current.value, { errorMessages });
         if (!expiryDateError) {
