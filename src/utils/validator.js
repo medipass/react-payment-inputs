@@ -42,8 +42,9 @@ export const getCardNumberError = (cardNumber, { errorMessages = {} } = {}) => {
     return errorMessages.emptyCardNumber || EMPTY_CARD_NUMBER;
   }
 
-  const cardType = cardTypes.getCardTypeByValue(cardNumber);
+  cardNumber = cardNumber.replace(/\s/g, '');
 
+  const cardType = cardTypes.getCardTypeByValue(cardNumber);
   if (cardType && cardType.lengths) {
     const doesCardNumberMatchLength = cardType.lengths.includes(cardNumber.length);
     if (doesCardNumberMatchLength) {
