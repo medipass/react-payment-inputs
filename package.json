@@ -1,6 +1,6 @@
 {
   "name": "react-payment-inputs",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A zero-dependency React Hook & Container to help with payment card input fields.",
   "main": "lib/index.js",
   "module": "es/index.js",
