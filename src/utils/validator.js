@@ -42,12 +42,12 @@ export const getCardNumberError = (cardNumber, { errorMessages = {} } = {}) => {
     return errorMessages.emptyCardNumber || EMPTY_CARD_NUMBER;
   }
 
-  const cardType = cardTypes.getCardTypeByValue(cardNumber);
-
+  const rawCardNumber = cardNumber.replace(/\s/g, '');
+  const cardType = cardTypes.getCardTypeByValue(rawCardNumber);
   if (cardType && cardType.lengths) {
-    const doesCardNumberMatchLength = cardType.lengths.includes(cardNumber.length);
+    const doesCardNumberMatchLength = cardType.lengths.includes(rawCardNumber.length);
     if (doesCardNumberMatchLength) {
-      const isLuhnValid = validateLuhn(cardNumber);
+      const isLuhnValid = validateLuhn(rawCardNumber);
       if (isLuhnValid) {
         return;
       }
