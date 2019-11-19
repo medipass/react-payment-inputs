@@ -200,12 +200,10 @@ Set custom card number validator function
 
 ```js
 const cardNumberValidator = ({ cardNumber, cardType, errorMessages }) => {
-  const cardNumberValidator = React.useCallback(({ cardNumber, cardType, errorMessages }) => {
-    if (cardType.displayName === 'Visa' || cardType.displayName === 'Mastercard') {
-      return;
-    }
-    return 'Card must be Visa or Mastercard';
-  }, []);
+  if (cardType.displayName === 'Visa' || cardType.displayName === 'Mastercard') {
+    return;
+  }
+  return 'Card must be Visa or Mastercard';
 }
 
 export default function MyComponent() {
