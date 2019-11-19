@@ -37,7 +37,7 @@ export const validateLuhn = cardNumber => {
     0
   );
 };
-export const getCardNumberError = (cardNumber, { errorMessages = {} } = {}) => {
+export const getCardNumberError = (cardNumber, cardNumberValidator, { errorMessages = {} } = {}) => {
   if (!cardNumber) {
     return errorMessages.emptyCardNumber || EMPTY_CARD_NUMBER;
   }
@@ -49,14 +49,16 @@ export const getCardNumberError = (cardNumber, { errorMessages = {} } = {}) => {
     if (doesCardNumberMatchLength) {
       const isLuhnValid = validateLuhn(rawCardNumber);
       if (isLuhnValid) {
+        if (cardNumberValidator) {
+          return cardNumberValidator({ cardNumber: rawCardNumber, cardType, errorMessages });
+        }
         return;
       }
     }
   }
-
   return errorMessages.invalidCardNumber || INVALID_CARD_NUMBER;
 };
-export const getExpiryDateError = (expiryDate, { errorMessages = {} } = {}) => {
+export const getExpiryDateError = (expiryDate, expiryValidator, { errorMessages = {} } = {}) => {
   if (!expiryDate) {
     return errorMessages.emptyExpiryDate || EMPTY_EXPIRY_DATE;
   }
@@ -73,11 +75,14 @@ export const getExpiryDateError = (expiryDate, { errorMessages = {} } = {}) => {
     if (parseInt(year) === new Date().getFullYear() && parseInt(month) < new Date().getMonth() + 1) {
       return errorMessages.dateOutOfRange || DATE_OUT_OF_RANGE;
     }
+    if (expiryValidator) {
+      return expiryValidator({ expiryDate: { month, year }, errorMessages });
+    }
     return;
   }
   return errorMessages.invalidExpiryDate || INVALID_EXPIRY_DATE;
 };
-export const getCVCError = (cvc, { cardType, errorMessages = {} } = {}) => {
+export const getCVCError = (cvc, cvcValidator, { cardType, errorMessages = {} } = {}) => {
   if (!cvc) {
     return errorMessages.emptyCVC || EMPTY_CVC;
   }
@@ -86,6 +91,9 @@ export const getCVCError = (cvc, { cardType, errorMessages = {} } = {}) => {
   }
   if (cardType && cvc.length !== cardType.code.length) {
     return errorMessages.invalidCVC || INVALID_CVC;
+  }
+  if (cvcValidator) {
+    return cvcValidator({ cvc, cardType, errorMessages });
   }
   return;
 };

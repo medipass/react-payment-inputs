@@ -2,7 +2,17 @@ import React from 'react';
 
 import utils from './utils';
 
-export default function usePaymentCard({ errorMessages, onBlur, onChange, onError, onTouch } = {}) {
+export default function usePaymentCard({
+  errorMessages,
+  onBlur,
+  onChange,
+  onError,
+  onTouch,
+  cardNumberValidator,
+  cvcValidator,
+  expiryValidator
+} = {}) {
+  console.log('Work?: ');
   const cardNumberField = React.useRef();
   const expiryDateField = React.useRef();
   const cvcField = React.useRef();
@@ -103,14 +113,14 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
           cardNumberField.current.setSelectionRange(cursorPosition, cursorPosition);
         });
 
-        const cardNumberError = utils.validator.getCardNumberError(cardNumber, { errorMessages });
+        const cardNumberError = utils.validator.getCardNumberError(cardNumber, cardNumberValidator, { errorMessages });
         if (!cardNumberError) {
           expiryDateField.current && expiryDateField.current.focus();
         }
         setInputError('cardNumber', cardNumberError);
       };
     },
-    [errorMessages, onChange, setInputError, setInputTouched]
+    [cardNumberValidator, errorMessages, onChange, setInputError, setInputTouched]
   );
 
   const handleFocusCardNumber = React.useCallback((props = {}) => {
@@ -179,15 +189,16 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
 
         props.onChange && props.onChange(e);
         onChange && onChange(e);
-
-        const expiryDateError = utils.validator.getExpiryDateError(expiryDateField.current.value, { errorMessages });
+        const expiryDateError = utils.validator.getExpiryDateError(expiryDateField.current.value, expiryValidator, {
+          errorMessages
+        });
         if (!expiryDateError) {
           cvcField.current && cvcField.current.focus();
         }
         setInputError('expiryDate', expiryDateError);
       };
     },
-    [errorMessages, onChange, setInputError, setInputTouched]
+    [errorMessages, expiryValidator, onChange, setInputError, setInputTouched]
   );
 
   const handleFocusExpiryDate = React.useCallback((props = {}) => {
@@ -277,14 +288,14 @@ export default function usePaymentCard({ errorMessages, onBlur, onChange, onErro
         props.onChange && props.onChange(e);
         onChange && onChange(e);
 
-        const cvcError = utils.validator.getCVCError(cvc, { cardType, errorMessages });
+        const cvcError = utils.validator.getCVCError(cvc, cvcValidator, { cardType, errorMessages });
         if (!cvcError) {
           zipField.current && zipField.current.focus();
         }
         setInputError('cvc', cvcError);
       };
     },
-    [errorMessages, onChange, setInputError, setInputTouched]
+    [cvcValidator, errorMessages, onChange, setInputError, setInputTouched]
   );
 
   const handleFocusCVC = React.useCallback((props = {}) => {

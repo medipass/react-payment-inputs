@@ -7,46 +7,63 @@
 
 <p align="center"><img src="./assets/wrapper.gif" width="500px"></img></p>
 
-- [Demos](#demos)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [With hooks](#with-hooks)
-  - [With render props](#with-render-props)
-  - [Using the built-in styled wrapper](#using-the-built-in-styled-wrapper)
-  - [More examples](#more-examples)
-- [`data = usePaymentInputs(options)`](#data--usepaymentinputsoptions)
-  - [options](#options)
-    - [options.errorMessages](#optionserrormessages)
-    - [options.onBlur](#optionsonblur)
-    - [options.onChange](#optionsonchange)
-    - [options.onError](#optionsonerror)
-    - [options.onTouch](#optionsontouch)
-  - [`data`](#data)
-    - [getCardNumberProps](#getcardnumberprops)
-    - [getExpiryDateProps](#getexpirydateprops)
-    - [getCVCProps](#getcvcprops)
-    - [getZIPProps](#getzipprops)
-    - [getCardImageProps](#getcardimageprops)
-    - [meta.cardType](#metacardtype)
-    - [meta.error](#metaerror)
-    - [meta.isTouched](#metaistouched)
-    - [meta.erroredInputs](#metaerroredinputs)
-    - [meta.touchedInputs](#metatouchedinputs)
-    - [meta.focused](#metafocused)
-    - [wrapperProps](#wrapperprops)
-- [`<PaymentInputsWrapper>` props](#paymentinputswrapper-props)
-  - [styles](#styles)
-  - [errorTextProps](#errortextprops)
-  - [inputWrapperProps](#inputwrapperprops)
-- [Using a third-party UI library](#using-a-third-party-ui-library)
-  - [Fannypack](#fannypack)
-  - [Bootstrap](#bootstrap)
-- [Form library examples](#form-library-examples)
-  - [Formik](#formik)
-  - [React Final Form](#react-final-form)
-- [Customising the in-built style wrapper](#customising-the-in-built-style-wrapper)
-- [Custom card images](#custom-card-images)
-- [License](#license)
+- [React Payment Inputs](#react-payment-inputs)
+  - [Demos](#demos)
+  - [Requirements](#requirements)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [With hooks](#with-hooks)
+    - [With render props](#with-render-props)
+    - [Using the built-in styled wrapper](#using-the-built-in-styled-wrapper)
+    - [More examples](#more-examples)
+  - [`data = usePaymentInputs(options)`](#data--usepaymentinputsoptions)
+    - [options](#options)
+      - [options.cardNumberValidator](#optionscardnumbervalidator)
+        - [Example](#example)
+      - [options.cvcValidator](#optionscvcvalidator)
+      - [options.errorMessages](#optionserrormessages)
+        - [Example](#example-1)
+      - [options.expiryDateValidator](#optionsexpirydatevalidator)
+      - [options.onBlur](#optionsonblur)
+      - [options.onChange](#optionsonchange)
+      - [options.onError](#optionsonerror)
+      - [options.onTouch](#optionsontouch)
+    - [`data`](#data)
+      - [getCardNumberProps](#getcardnumberprops)
+        - [Example snippet](#example-snippet)
+      - [getExpiryDateProps](#getexpirydateprops)
+        - [Example snippet](#example-snippet-1)
+      - [getCVCProps](#getcvcprops)
+        - [Example snippet](#example-snippet-2)
+      - [getZIPProps](#getzipprops)
+        - [Example snippet](#example-snippet-3)
+      - [getCardImageProps](#getcardimageprops)
+        - [Example snippet](#example-snippet-4)
+      - [meta.cardType](#metacardtype)
+        - [Example snippet](#example-snippet-5)
+      - [meta.error](#metaerror)
+        - [Example snippet](#example-snippet-6)
+      - [meta.isTouched](#metaistouched)
+      - [meta.erroredInputs](#metaerroredinputs)
+        - [Example snippet](#example-snippet-7)
+      - [meta.touchedInputs](#metatouchedinputs)
+        - [Example snippet](#example-snippet-8)
+      - [meta.focused](#metafocused)
+      - [wrapperProps](#wrapperprops)
+  - [`<PaymentInputsWrapper>` props](#paymentinputswrapper-props)
+    - [styles](#styles)
+      - [Schema](#schema)
+    - [errorTextProps](#errortextprops)
+    - [inputWrapperProps](#inputwrapperprops)
+  - [Using a third-party UI library](#using-a-third-party-ui-library)
+    - [Fannypack](#fannypack)
+    - [Bootstrap](#bootstrap)
+  - [Form library examples](#form-library-examples)
+    - [Formik](#formik)
+    - [React Final Form](#react-final-form)
+  - [Customising the in-built style wrapper](#customising-the-in-built-style-wrapper)
+  - [Custom card images](#custom-card-images)
+  - [License](#license)
 
 ## [Demos](https://medipass.github.io/react-payment-inputs)
 
@@ -172,7 +189,37 @@ export default function PaymentInputs() {
 
 ### options
 
-> `Object({ errorMessages, onBlur, onChange, onError, onTouch })`
+> `Object({ cardNumberValidator, cvcValidator, errorMessages, expiryValidator, onBlur, onChange, onError, onTouch  })`
+
+#### options.cardNumberValidator
+> `function({cardNumber, cardType, errorMessages})`
+
+Set custom card number validator function
+
+##### Example
+
+```js
+const cardNumberValidator = ({ cardNumber, cardType, errorMessages }) => {
+  const cardNumberValidator = React.useCallback(({ cardNumber, cardType, errorMessages }) => {
+    if (cardType.displayName === 'Visa' || cardType.displayName === 'Mastercard') {
+      return;
+    }
+    return 'Card must be Visa or Mastercard';
+  }, []);
+}
+
+export default function MyComponent() {
+  const { ... } = usePaymentInputs({
+    cardNumberValidator
+  });
+}
+```
+
+#### options.cvcValidator
+> `function({cvc, cardType, errorMessages})`
+
+Set custom cvc validator function
+
 
 #### options.errorMessages
 
@@ -201,6 +248,12 @@ export default function MyComponent() {
   });
 }
 ```
+
+#### options.expiryDateValidator
+> `function({expiryDate, errorMessages})`
+
+Set custom expiry date validator function
+
 
 #### options.onBlur
 
