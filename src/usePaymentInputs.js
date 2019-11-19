@@ -12,7 +12,6 @@ export default function usePaymentCard({
   cvcValidator,
   expiryValidator
 } = {}) {
-  console.log('Work?: ');
   const cardNumberField = React.useRef();
   const expiryDateField = React.useRef();
   const cvcField = React.useRef();
