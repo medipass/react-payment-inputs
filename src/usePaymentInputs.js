@@ -465,7 +465,7 @@ export default function usePaymentCard({
         setInputError('zip', zipError);
       }
       if (cvcField.current) {
-        const cvcError = utils.validator.getCVCError(cvcField.current.value, { errorMessages });
+        const cvcError = utils.validator.getCVCError(cvcField.current.value, cvcValidator, { errorMessages });
         setInputError('cvc', cvcError);
       }
       if (expiryDateField.current) {
@@ -477,7 +477,7 @@ export default function usePaymentCard({
         setInputError('cardNumber', cardNumberError);
       }
     },
-    [errorMessages, setInputError]
+    [cvcValidator, errorMessages, setInputError]
   );
 
   // Format default values
