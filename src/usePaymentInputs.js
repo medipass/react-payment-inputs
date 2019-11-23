@@ -469,15 +469,19 @@ export default function usePaymentCard({
         setInputError('cvc', cvcError);
       }
       if (expiryDateField.current) {
-        const expiryDateError = utils.validator.getExpiryDateError(expiryDateField.current.value, { errorMessages });
+        const expiryDateError = utils.validator.getExpiryDateError(expiryDateField.current.value, expiryValidator, {
+          errorMessages
+        });
         setInputError('expiryDate', expiryDateError);
       }
       if (cardNumberField.current) {
-        const cardNumberError = utils.validator.getCardNumberError(cardNumberField.current.value, { errorMessages });
+        const cardNumberError = utils.validator.getCardNumberError(cardNumberField.current.value, cardNumberValidator, {
+          errorMessages
+        });
         setInputError('cardNumber', cardNumberError);
       }
     },
-    [cvcValidator, errorMessages, setInputError]
+    [cardNumberValidator, cvcValidator, errorMessages, expiryValidator, setInputError]
   );
 
   // Format default values
