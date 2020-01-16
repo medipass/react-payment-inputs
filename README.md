@@ -74,16 +74,14 @@ Ensure you are running on a hooks-compatible version of React (v16.8 & above).
 ## Installation
 
 ```
-npm install react-payment-inputs styled-components --save
+npm install react-payment-inputs --save
 ```
 
 or install with [Yarn](https://yarnpkg.com) if you prefer:
 
 ```
-yarn add react-payment-inputs styled-components
+yarn add react-payment-inputs
 ```
-
-> React Payment Inputs requires [styled-components](https://styled-components.com) to be installed as a dependency.
 
 ## Usage
 
@@ -148,6 +146,8 @@ export default function PaymentInputs() {
 > **IMPORTANT:** You must place your event handlers (e.g. `onChange`, `onBlur`, etc) inside the prop getter function (e.g. `getCardNumberProps()`) so the default event handlers in React Payment Inputs don't get overridden.
 
 ### Using the built-in styled wrapper
+
+> Note: `<PaymentInputsWrapper>` requires [styled-components](https://styled-components.com) to be installed as a dependency.
 
 By default, React Payment Inputs does not have built-in styling for it's inputs. However, React Payment Inputs comes with a styled wrapper which combines the card number, expiry & CVC fields seen below:
 
