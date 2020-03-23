@@ -118,6 +118,7 @@ export default function usePaymentCard({
           expiryDateField.current && expiryDateField.current.focus();
         }
         setInputError('cardNumber', cardNumberError);
+        props.onError && props.onError(cardNumberError);
       };
     },
     [autoFocus, cardNumberValidator, errorMessages, onChange, setInputError, setInputTouched]
@@ -196,6 +197,7 @@ export default function usePaymentCard({
           cvcField.current && cvcField.current.focus();
         }
         setInputError('expiryDate', expiryDateError);
+        props.onError && props.onError(expiryDateError);
       };
     },
     [autoFocus, errorMessages, expiryValidator, onChange, setInputError, setInputTouched]
@@ -293,6 +295,7 @@ export default function usePaymentCard({
           zipField.current && zipField.current.focus();
         }
         setInputError('cvc', cvcError);
+        props.onError && props.onError(cvcError);
       };
     },
     [autoFocus, cvcValidator, errorMessages, onChange, setInputError, setInputTouched]
@@ -384,6 +387,7 @@ export default function usePaymentCard({
 
         const zipError = utils.validator.getZIPError(zip, { errorMessages });
         setInputError('zip', zipError);
+        props.onError && props.onError(zipError);
       };
     },
     [errorMessages, onChange, setInputError, setInputTouched]
