@@ -126,7 +126,7 @@ export default function usePaymentCard({
 
   const handleFocusCardNumber = React.useCallback((props = {}) => {
     return e => {
-      props.onFocus && props.onFocus();
+      props.onFocus && props.onFocus(e);
       setFocused('cardNumber');
     };
   }, []);
