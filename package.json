@@ -1,6 +1,6 @@
 {
   "name": "react-payment-inputs",
-  "version": "1.1.4-patch.0",
+  "version": "1.1.6",
   "description": "A zero-dependency React Hook & Container to help with payment card input fields.",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -13,7 +13,7 @@
     "images"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "yarn clean && yarn create-proxies && rollup -c",
     "create-proxies": "node scripts/create-proxies.js",
     "remove-proxies": "node scripts/remove-proxies.js",
     "clean": "rimraf es/ lib/ umd/ && yarn remove-proxies",
