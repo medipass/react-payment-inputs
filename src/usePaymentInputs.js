@@ -205,7 +205,7 @@ export default function usePaymentCard({
 
   const handleFocusExpiryDate = React.useCallback((props = {}) => {
     return e => {
-      props.onFocus && props.onFocus();
+      props.onFocus && props.onFocus(e);
       setFocused('expiryDate');
     };
   }, []);
@@ -303,7 +303,7 @@ export default function usePaymentCard({
 
   const handleFocusCVC = React.useCallback((props = {}) => {
     return e => {
-      props.onFocus && props.onFocus();
+      props.onFocus && props.onFocus(e);
       setFocused('cvc');
     };
   }, []);
@@ -395,7 +395,7 @@ export default function usePaymentCard({
 
   const handleFocusZIP = React.useCallback((props = {}) => {
     return e => {
-      props.onFocus && props.onFocus();
+      props.onFocus && props.onFocus(e);
       setFocused('zip');
     };
   }, []);
