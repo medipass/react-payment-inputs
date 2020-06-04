@@ -13,7 +13,7 @@
     "images"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "yarn clean && yarn create-proxies && rollup -c",
     "create-proxies": "node scripts/create-proxies.js",
     "remove-proxies": "node scripts/remove-proxies.js",
     "clean": "rimraf es/ lib/ umd/ && yarn remove-proxies",

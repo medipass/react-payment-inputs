@@ -107,9 +107,7 @@ export default function usePaymentCard({
         // the input field. Here, we want to reposition the cursor to the correct place.
         requestAnimationFrame(() => {
           if (document.activeElement !== cardNumberField.current) return;
-          if (cardNumberField.current.value[cursorPosition - 1] === ' ') {
-            cursorPosition = cursorPosition + 1;
-          }
+          cursorPosition = cursorPosition + 1;
           cardNumberField.current.setSelectionRange(cursorPosition, cursorPosition);
         });
 
