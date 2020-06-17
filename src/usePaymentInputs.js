@@ -138,7 +138,7 @@ export default function usePaymentCard({
 
       props.onKeyPress && props.onKeyPress(e);
 
-      if (e.keyCode !== utils.ENTER_KEY_CODE) {
+      if (e.key !== utils.ENTER_KEY_CODE) {
         if (!utils.validator.isNumeric(e)) {
           e.preventDefault();
         }
@@ -215,7 +215,7 @@ export default function usePaymentCard({
       return e => {
         props.onKeyDown && props.onKeyDown(e);
 
-        if (e.keyCode === utils.BACKSPACE_KEY_CODE && !e.target.value && autoFocus) {
+        if (e.key === utils.BACKSPACE_KEY_CODE && !e.target.value && autoFocus) {
           cardNumberField.current && cardNumberField.current.focus();
         }
       };
@@ -230,7 +230,7 @@ export default function usePaymentCard({
 
       props.onKeyPress && props.onKeyPress(e);
 
-      if (e.keyCode !== utils.ENTER_KEY_CODE) {
+      if (e.key !== utils.ENTER_KEY_CODE) {
         if (!utils.validator.isNumeric(e)) {
           e.preventDefault();
         }
@@ -313,7 +313,7 @@ export default function usePaymentCard({
       return e => {
         props.onKeyDown && props.onKeyDown(e);
 
-        if (e.keyCode === utils.BACKSPACE_KEY_CODE && !e.target.value && autoFocus) {
+        if (e.key === utils.BACKSPACE_KEY_CODE && !e.target.value && autoFocus) {
           expiryDateField.current && expiryDateField.current.focus();
         }
       };
@@ -328,7 +328,7 @@ export default function usePaymentCard({
 
       props.onKeyPress && props.onKeyPress(e);
 
-      if (e.keyCode !== utils.ENTER_KEY_CODE) {
+      if (e.key !== utils.ENTER_KEY_CODE) {
         if (!utils.validator.isNumeric(e)) {
           e.preventDefault();
         }
@@ -405,7 +405,7 @@ export default function usePaymentCard({
       return e => {
         props.onKeyDown && props.onKeyDown(e);
 
-        if (e.keyCode === utils.BACKSPACE_KEY_CODE && !e.target.value && autoFocus) {
+        if (e.key === utils.BACKSPACE_KEY_CODE && !e.target.value && autoFocus) {
           cvcField.current && cvcField.current.focus();
         }
       };
@@ -417,7 +417,7 @@ export default function usePaymentCard({
     return e => {
       props.onKeyPress && props.onKeyPress(e);
 
-      if (e.keyCode !== utils.ENTER_KEY_CODE) {
+      if (e.key !== utils.ENTER_KEY_CODE) {
         if (!utils.validator.isNumeric(e)) {
           e.preventDefault();
         }
