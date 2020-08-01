@@ -3,13 +3,18 @@ import { storiesOf } from '@storybook/react';
 import { Formik, Field as FormikField } from 'formik';
 import { Form, Field as FinalFormField } from 'react-final-form';
 import { View, Text, TextInput } from 'react-native';
-
-//import { css, Button, FieldSet, InputField } from 'fannypack';
-//import { Col, Form as BSForm } from 'react-bootstrap';
-//import 'bootstrap/dist/css/bootstrap.css';
+import Svg, { Rect } from "react-native-svg";
 
 import { PaymentInputsContainer, PaymentInputsWrapper, usePaymentInputs } from '../src';
 import images from '../src/images';
+
+//<Rect
+//              x="0"
+//              y="0"
+//              width="100"
+//              height="100"
+//              fill="blue"
+//            />
 
 storiesOf('usePaymentInputs', module)
   .add('basic (no styles)', () => {
@@ -18,9 +23,12 @@ storiesOf('usePaymentInputs', module)
       const [expiry, setExpiry] = useState('0211');
       const [cvc, setCvc] = useState('123');
       const [zip, setZip] = useState('90210');
-      const { meta, getCardNumberProps, getExpiryDateProps, getCVCProps, getZIPProps } = usePaymentInputs();
+      const { meta, getCardNumberProps, getExpiryDateProps, getCVCProps, getZIPProps, getCardImageProps } = usePaymentInputs();
       return (
         <View>
+          <Svg
+            {...getCardImageProps({images})}
+          />
           <View>
             <TextInput
               {...getCardNumberProps({ value: cardNumber, onChangeText: setCardNumber })}

@@ -449,9 +449,10 @@ export default function usePaymentCard({
   const getCardImageProps = React.useCallback(
     (props = {}) => {
       const images = props.images || {};
+      const children = images[cardType ? cardType.type : 'placeholder'] || images.placeholder;
       return {
         'aria-label': cardType ? cardType.displayName : 'Placeholder card',
-        children: images[cardType ? cardType.type : 'placeholder'] || images.placeholder,
+        children,
         width: '1.5em',
         height: '1em',
         viewBox: '0 0 24 16',
