@@ -21,7 +21,7 @@ export const hasCardNumberReachedMaxLength = currentValue => {
 };
 
 export const isNumeric = e => {
-  return /^\d*$/.test(e.key);
+  return /^\d*$/.test(e.nativeEvent.key);
 };
 
 export const validateLuhn = cardNumber => {

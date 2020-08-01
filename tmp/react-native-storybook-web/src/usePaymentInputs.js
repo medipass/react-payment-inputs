@@ -169,6 +169,7 @@ export default function usePaymentCard({
         onChange: handleChangeCardNumber(props),
         onFocus: handleFocusCardNumber(props),
         onKeyPress: handleKeyPressCardNumber(props),
+        selectTextOnFocus: true,
         ...props,
       };
     },
@@ -262,6 +263,7 @@ export default function usePaymentCard({
         onChange: handleChangeExpiryDate(props),
         onFocus: handleFocusExpiryDate(props),
         onKeyPress: handleKeyPressExpiryDate(props),
+        selectTextOnFocus: true,
         ...props,
       };
     },
@@ -357,6 +359,7 @@ export default function usePaymentCard({
           onChange: handleChangeCVC(props, { cardType }),
           onFocus: handleFocusCVC(props),
           onKeyPress: handleKeyPressCVC(props, { cardType }),
+          selectTextOnFocus: true,
           ...props,
       };
     },
@@ -434,6 +437,7 @@ export default function usePaymentCard({
         onChange: handleChangeZIP(props),
         onFocus: handleFocusZIP(props),
         onKeyPress: handleKeyPressZIP(props),
+        selectTextOnFocus: true,
         ...props,
       };
     },
