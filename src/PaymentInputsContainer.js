@@ -1,4 +1,4 @@
-import usePaymentInputs from './usePaymentInputs';
+import usePaymentInputs from "./usePaymentInputs";
 
 export default function PaymentInputsContainer(props) {
   const paymentInputs = usePaymentInputs(props);

@@ -6,8 +6,8 @@ module.exports = (config, configType) => {
     modules: ["node_modules"],
     extensions: [".web.js", ".js", ".json", ".web.jsx", ".jsx"],
     alias: {
-      "react-native$": require.resolve("react-native-web")
-    }
+      "react-native$": require.resolve("react-native-web"),
+    },
   };
 
   config.module.rules.unshift({
@@ -17,10 +17,10 @@ module.exports = (config, configType) => {
         loader: "react-native-web-image-loader",
         options: {
           name: "[name].[ext]",
-          scalings: { "": 1, "@2x": 2, "@3x": 3 }
-        }
-      }
-    ]
+          scalings: { "": 1, "@2x": 2, "@3x": 3 },
+        },
+      },
+    ],
   });
 
   config.module.rules.unshift({
@@ -28,8 +28,8 @@ module.exports = (config, configType) => {
     loader: require.resolve("url-loader"),
     options: {
       limit: 10000,
-      name: "static/media/[name].[hash:8].[ext]"
-    }
+      name: "static/media/[name].[hash:8].[ext]",
+    },
   });
 
   config.module.rules.unshift({
@@ -39,10 +39,10 @@ module.exports = (config, configType) => {
         loader: require.resolve("file-loader"),
         options: {
           limit: 10000,
-          name: "static/media/[name].[hash:8].[ext]"
-        }
-      }
-    ]
+          name: "static/media/[name].[hash:8].[ext]",
+        },
+      },
+    ],
   });
 
   config.module.rules.push({
@@ -52,10 +52,10 @@ module.exports = (config, configType) => {
         loader: require.resolve("babel-loader"),
         options: {
           plugins: ["@babel/plugin-proposal-class-properties"],
-          presets: ["@babel/preset-env", "@babel/preset-react"]
-        }
-      }
-    ]
+          presets: ["@babel/preset-env", "@babel/preset-react"],
+        },
+      },
+    ],
   });
 
   return config;

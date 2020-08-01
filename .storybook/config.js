@@ -1,28 +1,23 @@
-import React from 'react';
-import { Box, ThemeProvider, css, palette } from 'fannypack';
-import { configure, addDecorator } from '@storybook/react';
+import { configure, addDecorator } from "@storybook/react";
+import { configureViewport } from "@storybook/addon-viewport";
+import { withOptions } from "@storybook/addon-options";
+import { withKnobs } from "@storybook/addon-knobs";
 
-// automatically import all files ending in *.stories.js
-const req = require.context('../stories', true, /\.stories\.js$/);
 function loadStories() {
-  req.keys().forEach(filename => req(filename));
+  const req = require.context("../stories", true, /\.story\.jsx?$/);
+  req.keys().forEach((story) => req(story));
 }
 
-const theme = {
-  global: {
-    base: css`
-      & input {
-        font-size: 16px;
-      }
-
-      *:focus {
-        outline: 2px solid ${palette('primary')};
-        outline-offset: 0px;
-      }
-    `
-  }
-}
-const Decorator = storyFn => <ThemeProvider theme={theme}><Box padding="major-2">{storyFn()}</Box></ThemeProvider>;
-addDecorator(Decorator);
+addDecorator(
+  withOptions({
+    addonPanelInRight: true,
+  }),
+  withKnobs({
+    escapeHTML: false,
+  })
+);
 
 configure(loadStories, module);
+configureViewport({
+  defaultViewport: "iphone6p",
+});
