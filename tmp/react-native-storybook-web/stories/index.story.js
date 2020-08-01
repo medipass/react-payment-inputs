@@ -3,18 +3,10 @@ import { storiesOf } from '@storybook/react';
 import { Formik, Field as FormikField } from 'formik';
 import { Form, Field as FinalFormField } from 'react-final-form';
 import { View, Text, TextInput } from 'react-native';
-import Svg, { Rect } from "react-native-svg";
+import Svg from "react-native-svg";
 
 import { PaymentInputsContainer, PaymentInputsWrapper, usePaymentInputs } from '../src';
 import images from '../src/images';
-
-//<Rect
-//              x="0"
-//              y="0"
-//              width="100"
-//              height="100"
-//              fill="blue"
-//            />
 
 storiesOf('usePaymentInputs', module)
   .add('basic (no styles)', () => {
@@ -29,25 +21,17 @@ storiesOf('usePaymentInputs', module)
           <Svg
             {...getCardImageProps({images})}
           />
-          <View>
-            <TextInput
-              {...getCardNumberProps({ value: cardNumber, onChangeText: setCardNumber })}
-            />
-            <View>
-              <TextInput
-                {...getExpiryDateProps({ value: expiry, onChangeText: setExpiry })}
-              />
-            </View>
-            <View>
-              <TextInput {...getCVCProps({ value: cvc, onChangeText: setCvc })} />
-            </View>
-            <View>
-              <TextInput
-                {...getZIPProps({ value: zip, onChangeText: setZip })}
-              />
-            </View>
-            {meta.error && meta.isTouched && <Text>{meta.error}</Text>}
-          </View>
+          <TextInput
+            {...getCardNumberProps({ value: cardNumber, onChangeText: setCardNumber })}
+          />
+          <TextInput
+            {...getExpiryDateProps({ value: expiry, onChangeText: setExpiry })}
+          />
+          <TextInput {...getCVCProps({ value: cvc, onChangeText: setCvc })} />
+          <TextInput
+            {...getZIPProps({ value: zip, onChangeText: setZip })}
+          />
+          {meta.error && meta.isTouched && <Text>{meta.error}</Text>}
         </View>
       );
     }
