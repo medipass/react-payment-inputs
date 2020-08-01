@@ -4,7 +4,7 @@ import { withOptions } from "@storybook/addon-options";
 import { withKnobs } from "@storybook/addon-knobs";
 
 function loadStories() {
-  const req = require.context("../src", true, /\.story\.jsx?$/);
+  const req = require.context("../stories", true, /\.story\.jsx?$/);
   req.keys().forEach(story => req(story));
 }
 
