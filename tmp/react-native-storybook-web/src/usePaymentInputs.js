@@ -300,12 +300,13 @@ export default function usePaymentCard({
   const handleChangeCVC = React.useCallback(
     (props = {}, { cardType } = {}) => {
       return e => {
-        const cvc = e.target.value;
+        const cvc = e.nativeEvent.text;
 
         setInputTouched('cvc', false);
 
         props.onChange && props.onChange(e);
         onChange && onChange(e);
+        props.__onChangeText(cvc);
 
         const cvcError = utils.validator.getCVCError(cvc, cvcValidator, { cardType, errorMessages });
         if (!cvcError && autoFocus) {
@@ -360,21 +361,27 @@ export default function usePaymentCard({
   }, []);
 
   const getCVCProps = React.useCallback(
-    ({ refKey, ...props } = {}) => ({
-      'aria-label': 'CVC',
-      autoComplete: 'cc-csc',
-      id: 'cvc',
-      name: 'cvc',
-      placeholder: cardType ? cardType.code.name : 'CVC',
-      type: 'tel',
-      [refKey || 'ref']: cvcField,
-      ...props,
-      onBlur: handleBlurCVC(props),
-      onChange: handleChangeCVC(props, { cardType }),
-      onFocus: handleFocusCVC(props),
-      onKeyDown: handleKeyDownCVC(props),
-      onKeyPress: handleKeyPressCVC(props, { cardType })
-    }),
+    ({ refKey, onChangeText, ...extras } = {}) => {
+        const {...props} = {
+          ...extras,
+          __onChangeText: onChangeText,
+        };
+        return {
+          'aria-label': 'CVC',
+          autoComplete: 'cc-csc',
+          id: 'cvc',
+          name: 'cvc',
+          placeholder: cardType ? cardType.code.name : 'CVC',
+          type: 'tel',
+          [refKey || 'ref']: cvcField,
+          onBlur: handleBlurCVC(props),
+          onChange: handleChangeCVC(props, { cardType }),
+          onFocus: handleFocusCVC(props),
+          onKeyDown: handleKeyDownCVC(props),
+          onKeyPress: handleKeyPressCVC(props, { cardType }),
+          ...props,
+      };
+    },
     [cardType, handleBlurCVC, handleChangeCVC, handleFocusCVC, handleKeyDownCVC, handleKeyPressCVC]
   );
   /** ====== END: CVC STUFF ====== */
@@ -483,11 +490,11 @@ export default function usePaymentCard({
   React.useLayoutEffect(
     () => {
       if (zipField.current) {
-        const zipError = utils.validator.getZIPError(zipField.current.value, { errorMessages });
+        const zipError = utils.validator.getZIPError(zipField.current.props.value, { errorMessages });
         setInputError('zip', zipError);
       }
       if (cvcField.current) {
-        const cvcError = utils.validator.getCVCError(cvcField.current.value, cvcValidator, { errorMessages });
+        const cvcError = utils.validator.getCVCError(cvcField.current.props.value, cvcValidator, { errorMessages });
         setInputError('cvc', cvcError);
       }
       if (expiryDateField.current) {

@@ -16,6 +16,7 @@ storiesOf('usePaymentInputs', module)
     function Component() {
       const [cardNumber, setCardNumber] = useState('4444111111111111');
       const [expiry, setExpiry] = useState('0211');
+      const [cvc, setCvc] = useState('123');
       const { meta, getCardNumberProps, getExpiryDateProps, getCVCProps } = usePaymentInputs();
       return (
         <View>
@@ -28,15 +29,11 @@ storiesOf('usePaymentInputs', module)
                 {...getExpiryDateProps({ value: expiry, onChangeText: setExpiry })}
               />
             </View>
+            <View>
+              <TextInput {...getCVCProps({ value: cvc, onChangeText: setCvc })} />
+            </View>
             {meta.error && meta.isTouched && <Text>{meta.error}</Text>}
           </View>
-          {false && (
-            <>
-              <View>
-                <TextInput {...getCVCProps()} />
-              </View>
-            </>
-          )}
         </View>
       );
     }
