@@ -17,7 +17,8 @@ storiesOf('usePaymentInputs', module)
       const [cardNumber, setCardNumber] = useState('4444111111111111');
       const [expiry, setExpiry] = useState('0211');
       const [cvc, setCvc] = useState('123');
-      const { meta, getCardNumberProps, getExpiryDateProps, getCVCProps } = usePaymentInputs();
+      const [zip, setZip] = useState('90210');
+      const { meta, getCardNumberProps, getExpiryDateProps, getCVCProps, getZIPProps } = usePaymentInputs();
       return (
         <View>
           <View>
@@ -31,6 +32,11 @@ storiesOf('usePaymentInputs', module)
             </View>
             <View>
               <TextInput {...getCVCProps({ value: cvc, onChangeText: setCvc })} />
+            </View>
+            <View>
+              <TextInput
+                {...getZIPProps({ value: zip, onChangeText: setZip })}
+              />
             </View>
             {meta.error && meta.isTouched && <Text>{meta.error}</Text>}
           </View>

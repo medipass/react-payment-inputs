@@ -402,8 +402,9 @@ export default function usePaymentCard({
   const handleChangeZIP = React.useCallback(
     (props = {}) => {
       return e => {
-        const zip = e.target.value;
+        const zip = e.nativeEvent.text;
 
+        props.__onChangeText(zip);
         setInputTouched('zip', false);
 
         props.onChange && props.onChange(e);
@@ -450,21 +451,27 @@ export default function usePaymentCard({
   }, []);
 
   const getZIPProps = React.useCallback(
-    ({ refKey, ...props } = {}) => ({
-      autoComplete: 'off',
-      id: 'zip',
-      maxLength: '6',
-      name: 'zip',
-      placeholder: 'ZIP',
-      type: 'tel',
-      [refKey || 'ref']: zipField,
-      ...props,
-      onBlur: handleBlurZIP(props),
-      onChange: handleChangeZIP(props),
-      onFocus: handleFocusZIP(props),
-      onKeyDown: handleKeyDownZIP(props),
-      onKeyPress: handleKeyPressZIP(props)
-    }),
+    ({ refKey, onChangeText, ...extras } = {}) => {
+      const {...props} = {
+        ...extras,
+        __onChangeText: onChangeText,
+      };
+      return {
+        autoComplete: 'off',
+        id: 'zip',
+        maxLength: '6',
+        name: 'zip',
+        placeholder: 'ZIP',
+        type: 'tel',
+        [refKey || 'ref']: zipField,
+        onBlur: handleBlurZIP(props),
+        onChange: handleChangeZIP(props),
+        onFocus: handleFocusZIP(props),
+        onKeyDown: handleKeyDownZIP(props),
+        onKeyPress: handleKeyPressZIP(props),
+        ...props,
+      };
+    },
     [handleBlurZIP, handleChangeZIP, handleFocusZIP, handleKeyDownZIP, handleKeyPressZIP]
   );
   /** ====== END: ZIP STUFF ====== */
