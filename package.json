@@ -1,7 +1,7 @@
 {
   "name": "react-native-payment-inputs",
   "version": "0.0.1-alpha.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
@@ -44,5 +44,10 @@
   },
   "jest": {
     "preset": "react-native"
-  }
+  },
+  "description": "A React Native Hook & Container to help with payment card input fields.",
+  "main": "dist",
+  "repository": "https://github.com/cawfree/react-native-payment-inputs",
+  "author": "medipass.github.io/react-payment-inputs",
+  "license": "MIT"
 }
