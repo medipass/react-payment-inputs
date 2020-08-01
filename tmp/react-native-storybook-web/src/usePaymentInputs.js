@@ -88,7 +88,8 @@ export default function usePaymentCard({
   const handleChangeCardNumber = React.useCallback(
     (props = {}) => {
       return e => {
-        const formattedCardNumber = e.target.value || '';
+
+        const formattedCardNumber = e.nativeEvent.text || '';
         const cardNumber = formattedCardNumber.replace(/\s/g, '');
         let cursorPosition = cardNumberField.current.selectionStart;
 
@@ -98,7 +99,7 @@ export default function usePaymentCard({
         setInputTouched('cardNumber', false);
 
         // @ts-ignore
-        cardNumberField.current.value = utils.formatter.formatCardNumber(cardNumber);
+        props.onChangeText(utils.formatter.formatCardNumber(cardNumber));
 
         props.onChange && props.onChange(e);
         onChange && onChange(e);
@@ -158,11 +159,12 @@ export default function usePaymentCard({
       placeholder: 'Card number',
       type: 'tel',
       [refKey || 'ref']: cardNumberField,
-      ...props,
       onBlur: handleBlurCardNumber(props),
       onChange: handleChangeCardNumber(props),
       onFocus: handleFocusCardNumber(props),
-      onKeyPress: handleKeyPressCardNumber(props)
+      onKeyPress: handleKeyPressCardNumber(props),
+      // TODO: Need to prevent special overrides here.
+      ...props,
     }),
     [handleBlurCardNumber, handleChangeCardNumber, handleFocusCardNumber, handleKeyPressCardNumber]
   );
@@ -492,7 +494,7 @@ export default function usePaymentCard({
   // Format default values
   React.useLayoutEffect(() => {
     if (cardNumberField.current) {
-      cardNumberField.current.value = utils.formatter.formatCardNumber(cardNumberField.current.value);
+      cardNumberField.current.props.onChangeText(utils.formatter.formatCardNumber(cardNumberField.current.props.value));
     }
     if (expiryDateField.current) {
       expiryDateField.current.value = utils.formatter.formatExpiry({ target: expiryDateField.current });

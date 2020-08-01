@@ -14,13 +14,15 @@ import images from '../src/images';
 storiesOf('usePaymentInputs', module)
   .add('basic (no styles)', () => {
     function Component() {
-      const [cardNumber, setCardNumber] = useState('');
+      const [cardNumber, setCardNumber] = useState('4444111111111111');
       const { meta, getCardNumberProps, getExpiryDateProps, getCVCProps } = usePaymentInputs();
       return (
         <View>
           <View>
-            <TextInput {...getCardNumberProps({ value: cardNumber, onChangeText: setCardNumber })}
+            <TextInput
+              {...getCardNumberProps({ value: cardNumber, onChangeText: setCardNumber })}
             />
+            {meta.error && meta.isTouched && <Text>{meta.error}</Text>}
           </View>
           {false && (
             <>
@@ -30,7 +32,6 @@ storiesOf('usePaymentInputs', module)
               <View>
                 <TextInput {...getCVCProps()} />
               </View>
-              {meta.error && meta.isTouched && <Text>{meta.error}</Text>}
             </>
           )}
         </View>
