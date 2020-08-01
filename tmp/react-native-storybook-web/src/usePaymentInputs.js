@@ -99,7 +99,7 @@ export default function usePaymentCard({
         setInputTouched('cardNumber', false);
 
         // @ts-ignore
-        props.onChangeText(utils.formatter.formatCardNumber(cardNumber));
+        props.__onChangeText(utils.formatter.formatCardNumber(cardNumber));
 
         props.onChange && props.onChange(e);
         onChange && onChange(e);
@@ -151,21 +151,26 @@ export default function usePaymentCard({
   }, []);
 
   const getCardNumberProps = React.useCallback(
-    ({ refKey, ...props } = {}) => ({
-      'aria-label': 'Card number',
-      autoComplete: 'cc-number',
-      id: 'cardNumber',
-      name: 'cardNumber',
-      placeholder: 'Card number',
-      type: 'tel',
-      [refKey || 'ref']: cardNumberField,
-      onBlur: handleBlurCardNumber(props),
-      onChange: handleChangeCardNumber(props),
-      onFocus: handleFocusCardNumber(props),
-      onKeyPress: handleKeyPressCardNumber(props),
-      // TODO: Need to prevent special overrides here.
-      ...props,
-    }),
+    ({ refKey, onChangeText, ...extras } = {}) => {
+      const {...props} = {
+        ...extras,
+        __onChangeText: onChangeText,
+      };
+      return {
+        'aria-label': 'Card number',
+        autoComplete: 'cc-number',
+        id: 'cardNumber',
+        name: 'cardNumber',
+        placeholder: 'Card number',
+        type: 'tel',
+        [refKey || 'ref']: cardNumberField,
+        onBlur: handleBlurCardNumber(props),
+        onChange: handleChangeCardNumber(props),
+        onFocus: handleFocusCardNumber(props),
+        onKeyPress: handleKeyPressCardNumber(props),
+        ...props,
+      };
+    },
     [handleBlurCardNumber, handleChangeCardNumber, handleFocusCardNumber, handleKeyPressCardNumber]
   );
   /** ====== END: CARD NUMBER STUFF ====== */
@@ -188,11 +193,15 @@ export default function usePaymentCard({
       return e => {
         setInputTouched('expiryDate', false);
 
-        expiryDateField.current.value = utils.formatter.formatExpiry(e);
+        console.log(e.nativeEvent.text);
+        console.log(utils.formatter.formatExpiry(e.nativeEvent.text));
+
+        props.__onChangeText(utils.formatter.formatExpiry(e.nativeEvent.text));
 
         props.onChange && props.onChange(e);
+
         onChange && onChange(e);
-        const expiryDateError = utils.validator.getExpiryDateError(expiryDateField.current.value, expiryValidator, {
+        const expiryDateError = utils.validator.getExpiryDateError(props.value, expiryValidator, {
           errorMessages
         });
         if (!expiryDateError && autoFocus) {
@@ -217,7 +226,7 @@ export default function usePaymentCard({
       return e => {
         props.onKeyDown && props.onKeyDown(e);
 
-        if (e.key === utils.BACKSPACE_KEY_CODE && !e.target.value && autoFocus) {
+        if (e.nativeEvent.key === utils.BACKSPACE_KEY_CODE && !props.value && autoFocus) {
           cardNumberField.current && cardNumberField.current.focus();
         }
       };
@@ -244,21 +253,27 @@ export default function usePaymentCard({
   }, []);
 
   const getExpiryDateProps = React.useCallback(
-    ({ refKey, ...props } = {}) => ({
-      'aria-label': 'Expiry date in format MM YY',
-      autoComplete: 'cc-exp',
-      id: 'expiryDate',
-      name: 'expiryDate',
-      placeholder: 'MM/YY',
-      type: 'tel',
-      [refKey || 'ref']: expiryDateField,
-      ...props,
-      onBlur: handleBlurExpiryDate(props),
-      onChange: handleChangeExpiryDate(props),
-      onFocus: handleFocusExpiryDate(props),
-      onKeyDown: handleKeyDownExpiryDate(props),
-      onKeyPress: handleKeyPressExpiryDate(props)
-    }),
+    ({ refKey, onChangeText, ...extras } = {}) => {
+      const {...props} = {
+        ...extras,
+        __onChangeText: onChangeText,
+      };
+      return {
+        'aria-label': 'Expiry date in format MM YY',
+        autoComplete: 'cc-exp',
+        id: 'expiryDate',
+        name: 'expiryDate',
+        placeholder: 'MM/YY',
+        type: 'tel',
+        [refKey || 'ref']: expiryDateField,
+        onBlur: handleBlurExpiryDate(props),
+        onChange: handleChangeExpiryDate(props),
+        onFocus: handleFocusExpiryDate(props),
+        onKeyDown: handleKeyDownExpiryDate(props),
+        onKeyPress: handleKeyPressExpiryDate(props),
+        ...props,
+      };
+    },
     [
       handleBlurExpiryDate,
       handleChangeExpiryDate,
@@ -476,13 +491,13 @@ export default function usePaymentCard({
         setInputError('cvc', cvcError);
       }
       if (expiryDateField.current) {
-        const expiryDateError = utils.validator.getExpiryDateError(expiryDateField.current.value, expiryValidator, {
+        const expiryDateError = utils.validator.getExpiryDateError(expiryDateField.current.props.value, expiryValidator, {
           errorMessages
         });
         setInputError('expiryDate', expiryDateError);
       }
       if (cardNumberField.current) {
-        const cardNumberError = utils.validator.getCardNumberError(cardNumberField.current.value, cardNumberValidator, {
+        const cardNumberError = utils.validator.getCardNumberError(cardNumberField.current.props.value, cardNumberValidator, {
           errorMessages
         });
         setInputError('cardNumber', cardNumberError);
@@ -494,10 +509,10 @@ export default function usePaymentCard({
   // Format default values
   React.useLayoutEffect(() => {
     if (cardNumberField.current) {
-      cardNumberField.current.props.onChangeText(utils.formatter.formatCardNumber(cardNumberField.current.props.value));
+      cardNumberField.current.props.__onChangeText(utils.formatter.formatCardNumber(cardNumberField.current.props.value));
     }
     if (expiryDateField.current) {
-      expiryDateField.current.value = utils.formatter.formatExpiry({ target: expiryDateField.current });
+      expiryDateField.current.props.__onChangeText(utils.formatter.formatExpiry(expiryDateField.current.props.value));
     }
   }, []);
 

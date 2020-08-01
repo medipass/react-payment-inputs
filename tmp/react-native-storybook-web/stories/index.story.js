@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { storiesOf } from '@storybook/react';
 import { Formik, Field as FormikField } from 'formik';
 import { Form, Field as FinalFormField } from 'react-final-form';
-import { View, TextInput } from 'react-native';
+import { View, Text, TextInput } from 'react-native';
 
 //import { css, Button, FieldSet, InputField } from 'fannypack';
 //import { Col, Form as BSForm } from 'react-bootstrap';
@@ -15,6 +15,7 @@ storiesOf('usePaymentInputs', module)
   .add('basic (no styles)', () => {
     function Component() {
       const [cardNumber, setCardNumber] = useState('4444111111111111');
+      const [expiry, setExpiry] = useState('0211');
       const { meta, getCardNumberProps, getExpiryDateProps, getCVCProps } = usePaymentInputs();
       return (
         <View>
@@ -22,13 +23,15 @@ storiesOf('usePaymentInputs', module)
             <TextInput
               {...getCardNumberProps({ value: cardNumber, onChangeText: setCardNumber })}
             />
+            <View>
+              <TextInput
+                {...getExpiryDateProps({ value: expiry, onChangeText: setExpiry })}
+              />
+            </View>
             {meta.error && meta.isTouched && <Text>{meta.error}</Text>}
           </View>
           {false && (
             <>
-              <View>
-                <TextInput {...getExpiryDateProps()} />
-              </View>
               <View>
                 <TextInput {...getCVCProps()} />
               </View>

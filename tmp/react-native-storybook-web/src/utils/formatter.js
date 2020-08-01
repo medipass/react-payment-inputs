@@ -23,12 +23,14 @@ export const formatCardNumber = cardNumber => {
   return cardNumber;
 };
 
-export const formatExpiry = event => {
-  const eventData = event.nativeEvent && event.nativeEvent.data;
-  const prevExpiry = event.target.value.split(' / ').join('/');
+export const formatExpiry = text => {
+  const eventData = false;//event.nativeEvent && event.nativeEvent.data;
+  const prevExpiry = (text || '').split(' / ').join('/');
 
   if (!prevExpiry) return null;
+
   let expiry = prevExpiry;
+
   if (/^[2-9]$/.test(expiry)) {
     expiry = `0${expiry}`;
   }
