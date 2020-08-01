@@ -9,10 +9,14 @@
     "build:storybook": "build-storybook -c .storybook -o public"
   },
   "dependencies": {
-    "react": "16.6.3",
+    "final-form": "^4.20.1",
+    "formik": "^2.1.5",
+    "react": "^16.13.1",
+    "react-final-form": "^6.5.1",
     "react-native": "0.57.8",
     "react-native-elements": "^0.19.1",
-    "react-native-vector-icons": "^6.2.0"
+    "react-native-vector-icons": "^6.2.0",
+    "styled-components": "^5.1.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.3.0",
