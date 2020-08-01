@@ -134,12 +134,12 @@ export default function usePaymentCard({
 
   const handleKeyPressCardNumber = React.useCallback((props = {}) => {
     return e => {
-      const formattedCardNumber = e.target.value || '';
+      const formattedCardNumber = props.value || '';
       const cardNumber = formattedCardNumber.replace(/\s/g, '');
 
       props.onKeyPress && props.onKeyPress(e);
 
-      if (e.key !== utils.ENTER_KEY_CODE) {
+      if (e.nativeEvent.key !== utils.ENTER_KEY_CODE) {
         if (!utils.validator.isNumeric(e)) {
           e.preventDefault();
         }
@@ -151,10 +151,11 @@ export default function usePaymentCard({
   }, []);
 
   const getCardNumberProps = React.useCallback(
-    ({ refKey, onChangeText, ...extras } = {}) => {
+    ({ refKey, onChangeText, value, ...extras } = {}) => {
       const {...props} = {
         ...extras,
         __onChangeText: onChangeText,
+        value: value || '',
       };
       return {
         'aria-label': 'Card number',
@@ -193,17 +194,20 @@ export default function usePaymentCard({
       return e => {
         setInputTouched('expiryDate', false);
 
-        console.log(e.nativeEvent.text);
-        console.log(utils.formatter.formatExpiry(e.nativeEvent.text));
 
-        props.__onChangeText(utils.formatter.formatExpiry(e.nativeEvent.text));
+        const nextValue = utils.formatter.formatExpiry(e.nativeEvent.text);
+        props.__onChangeText(nextValue);
 
         props.onChange && props.onChange(e);
 
         onChange && onChange(e);
-        const expiryDateError = utils.validator.getExpiryDateError(props.value, expiryValidator, {
+
+        const expiryDateError = utils.validator.getExpiryDateError(nextValue, expiryValidator, {
           errorMessages
         });
+
+        console.log('expiry error', expiryDateError);
+
         if (!expiryDateError && autoFocus) {
           cvcField.current && cvcField.current.focus();
         }
@@ -221,27 +225,14 @@ export default function usePaymentCard({
     };
   }, []);
 
-  const handleKeyDownExpiryDate = React.useCallback(
-    (props = {}) => {
-      return e => {
-        props.onKeyDown && props.onKeyDown(e);
-
-        if (e.nativeEvent.key === utils.BACKSPACE_KEY_CODE && !props.value && autoFocus) {
-          cardNumberField.current && cardNumberField.current.focus();
-        }
-      };
-    },
-    [autoFocus]
-  );
-
   const handleKeyPressExpiryDate = React.useCallback((props = {}) => {
     return e => {
-      const formattedExpiryDate = e.target.value || '';
+      const formattedExpiryDate = props.value || '';
       const expiryDate = formattedExpiryDate.replace(' / ', '');
 
       props.onKeyPress && props.onKeyPress(e);
 
-      if (e.key !== utils.ENTER_KEY_CODE) {
+      if (e.nativeEvent.key !== utils.ENTER_KEY_CODE) {
         if (!utils.validator.isNumeric(e)) {
           e.preventDefault();
         }
@@ -253,10 +244,11 @@ export default function usePaymentCard({
   }, []);
 
   const getExpiryDateProps = React.useCallback(
-    ({ refKey, onChangeText, ...extras } = {}) => {
+    ({ refKey, onChangeText, value, ...extras } = {}) => {
       const {...props} = {
         ...extras,
         __onChangeText: onChangeText,
+        value: value || '',
       };
       return {
         'aria-label': 'Expiry date in format MM YY',
@@ -269,7 +261,6 @@ export default function usePaymentCard({
         onBlur: handleBlurExpiryDate(props),
         onChange: handleChangeExpiryDate(props),
         onFocus: handleFocusExpiryDate(props),
-        onKeyDown: handleKeyDownExpiryDate(props),
         onKeyPress: handleKeyPressExpiryDate(props),
         ...props,
       };
@@ -278,7 +269,6 @@ export default function usePaymentCard({
       handleBlurExpiryDate,
       handleChangeExpiryDate,
       handleFocusExpiryDate,
-      handleKeyDownExpiryDate,
       handleKeyPressExpiryDate
     ]
   );
@@ -326,27 +316,15 @@ export default function usePaymentCard({
     };
   }, []);
 
-  const handleKeyDownCVC = React.useCallback(
-    (props = {}) => {
-      return e => {
-        props.onKeyDown && props.onKeyDown(e);
-
-        if (e.key === utils.BACKSPACE_KEY_CODE && !e.target.value && autoFocus) {
-          expiryDateField.current && expiryDateField.current.focus();
-        }
-      };
-    },
-    [autoFocus]
-  );
 
   const handleKeyPressCVC = React.useCallback((props = {}, { cardType }) => {
     return e => {
-      const formattedCVC = e.target.value || '';
+      const formattedCVC = props.value || '';
       const cvc = formattedCVC.replace(' / ', '');
 
       props.onKeyPress && props.onKeyPress(e);
 
-      if (e.key !== utils.ENTER_KEY_CODE) {
+      if (e.nativeEvent.key !== utils.ENTER_KEY_CODE) {
         if (!utils.validator.isNumeric(e)) {
           e.preventDefault();
         }
@@ -361,10 +339,11 @@ export default function usePaymentCard({
   }, []);
 
   const getCVCProps = React.useCallback(
-    ({ refKey, onChangeText, ...extras } = {}) => {
+    ({ refKey, onChangeText, value, ...extras } = {}) => {
         const {...props} = {
           ...extras,
           __onChangeText: onChangeText,
+          value: value || '',
         };
         return {
           'aria-label': 'CVC',
@@ -377,12 +356,11 @@ export default function usePaymentCard({
           onBlur: handleBlurCVC(props),
           onChange: handleChangeCVC(props, { cardType }),
           onFocus: handleFocusCVC(props),
-          onKeyDown: handleKeyDownCVC(props),
           onKeyPress: handleKeyPressCVC(props, { cardType }),
           ...props,
       };
     },
-    [cardType, handleBlurCVC, handleChangeCVC, handleFocusCVC, handleKeyDownCVC, handleKeyPressCVC]
+    [cardType, handleBlurCVC, handleChangeCVC, handleFocusCVC, handleKeyPressCVC]
   );
   /** ====== END: CVC STUFF ====== */
 
@@ -425,24 +403,11 @@ export default function usePaymentCard({
     };
   }, []);
 
-  const handleKeyDownZIP = React.useCallback(
-    (props = {}) => {
-      return e => {
-        props.onKeyDown && props.onKeyDown(e);
-
-        if (e.key === utils.BACKSPACE_KEY_CODE && !e.target.value && autoFocus) {
-          cvcField.current && cvcField.current.focus();
-        }
-      };
-    },
-    [autoFocus]
-  );
-
   const handleKeyPressZIP = React.useCallback((props = {}) => {
     return e => {
       props.onKeyPress && props.onKeyPress(e);
 
-      if (e.key !== utils.ENTER_KEY_CODE) {
+      if (e.nativeEvent.key !== utils.ENTER_KEY_CODE) {
         if (!utils.validator.isNumeric(e)) {
           e.preventDefault();
         }
@@ -451,10 +416,11 @@ export default function usePaymentCard({
   }, []);
 
   const getZIPProps = React.useCallback(
-    ({ refKey, onChangeText, ...extras } = {}) => {
+    ({ refKey, onChangeText, value, ...extras } = {}) => {
       const {...props} = {
         ...extras,
         __onChangeText: onChangeText,
+        value: value || '',
       };
       return {
         autoComplete: 'off',
@@ -467,12 +433,11 @@ export default function usePaymentCard({
         onBlur: handleBlurZIP(props),
         onChange: handleChangeZIP(props),
         onFocus: handleFocusZIP(props),
-        onKeyDown: handleKeyDownZIP(props),
         onKeyPress: handleKeyPressZIP(props),
         ...props,
       };
     },
-    [handleBlurZIP, handleChangeZIP, handleFocusZIP, handleKeyDownZIP, handleKeyPressZIP]
+    [handleBlurZIP, handleChangeZIP, handleFocusZIP, handleKeyPressZIP]
   );
   /** ====== END: ZIP STUFF ====== */
 
