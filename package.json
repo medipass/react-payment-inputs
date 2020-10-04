@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "build": "babel src --out-dir dist",
+    "build": "yarn ; babel src --out-dir dist ; rm -rf node_modules",
     "prettify": "yarn prettier --write \"**/*.js\"",
     "storybook": "start-storybook -p 9009 -c .storybook"
   },

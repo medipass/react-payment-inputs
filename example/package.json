@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "expo": "~39.0.0",
+    "react": "~16.13.0",
+    "react-dom": "~16.13.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.2.tar.gz",
+    "react-native-payment-inputs": "../",
+    "react-native-svg": "12.1.0",
+    "react-native-web": "0.13.13",
+    "styled-components": "^5.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "7.9.0"
+  },
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo web",
+    "eject": "expo eject"
+  },
+  "private": true
+}
