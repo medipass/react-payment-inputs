@@ -55,11 +55,12 @@ export default function usePaymentCard({
 
   const setInputTouched = React.useCallback((input, value) => {
     requestAnimationFrame(() => {
-      if (document.activeElement.tagName !== "INPUT") {
-        setIsTouched(true);
-      } else if (value === false) {
-        setIsTouched(false);
-      }
+      setIsTouched(value);
+      //if (document.activeElement.tagName !== "INPUT") {
+      //  setIsTouched(true);
+      //} else if (value === false) {
+      //  setIsTouched(false);
+      //}
     });
 
     setTouchedInputs((touchedInputs) => {
@@ -106,6 +107,7 @@ export default function usePaymentCard({
         // Due to the card number formatting, the selection cursor will fall to the end of
         // the input field. Here, we want to reposition the cursor to the correct place.
         requestAnimationFrame(() => {
+          return;
           if (document.activeElement !== cardNumberField.current) return;
           if (cardNumberField.current.value[cursorPosition - 1] === " ") {
             cursorPosition = cursorPosition + 1;
@@ -183,6 +185,7 @@ export default function usePaymentCard({
         onFocus: handleFocusCardNumber(props),
         onKeyPress: handleKeyPressCardNumber(props),
         selectTextOnFocus: true,
+        textContentType: "creditCardNumber",
         ...props,
       };
     },
@@ -284,7 +287,7 @@ export default function usePaymentCard({
         autoComplete: "cc-exp",
         id: "expiryDate",
         name: "expiryDate",
-        placeholder: "MM/YY",
+        placeholder: "MM / YY",
         type: "tel",
         [refKey || "ref"]: expiryDateField,
         onBlur: handleBlurExpiryDate(props),
@@ -496,10 +499,8 @@ export default function usePaymentCard({
         images[cardType ? cardType.type : "placeholder"] || images.placeholder;
       return {
         "aria-label": cardType ? cardType.displayName : "Placeholder card",
-        children,
-        width: "1.5em",
-        height: "1em",
         viewBox: "0 0 24 16",
+        children,
         ...props,
       };
     },
@@ -566,15 +567,16 @@ export default function usePaymentCard({
 //    }
 //  }, []);
 //
-//  // Set default card type
-//  React.useLayoutEffect(() => {
-//    if (cardNumberField.current) {
-//      const cardType = utils.cardTypes.getCardTypeByValue(
-//        cardNumberField.current.value
-//      );
-//      setCardType(cardType);
-//    }
-//  }, []);
+
+  //// Set default card type
+  //React.useLayoutEffect(() => {
+  //  if (cardNumberField.current) {
+  //    const cardType = utils.cardTypes.getCardTypeByValue(
+  //      cardNumberField.current.value
+  //    );
+  //    setCardType(cardType);
+  //  }
+  //}, []);
 
   return {
     getCardImageProps,

@@ -1,11 +1,15 @@
 import React, { useState } from "react";
-import { View, Text, TextInput } from "react-native";
+import { SafeAreaView, View, Text, TextInput } from "react-native";
 import Svg from "react-native-svg";
-import { css } from "styled-components";
 import { PaymentInputsWrapper, usePaymentInputs, images } from "./lib";
+import styled, { css } from "styled-components";
+
+const Container = styled(View)`
+  width: 100%;
+`;
 
 function Component() {
-  const [cardNumber, setCardNumber] = useState();
+  const [cardNumber, setCardNumber] = useState("4444");
   const [expiry, setExpiry] = useState();
   const [cvc, setCvc] = useState();
   const [zip, setZip] = useState();
@@ -18,9 +22,16 @@ function Component() {
     wrapperProps,
   } = usePaymentInputs();
   return (
-    <View>
+    <Container> 
       <PaymentInputsWrapper {...wrapperProps}>
-        <Svg {...getCardImageProps({ images })} />
+        <Svg
+          style={{
+            width: 50,
+            height: 35,
+          }}
+          viewBox="0 0 25 16"
+          {...getCardImageProps({ images })}
+        />
         <TextInput
           {...getCardNumberProps({
             value: cardNumber,
@@ -36,20 +47,14 @@ function Component() {
         <TextInput {...getCVCProps({ value: cvc, onChangeText: setCvc })} />
         <TextInput {...getZIPProps({ value: zip, onChangeText: setZip })} />
       </PaymentInputsWrapper>
-    </View>
+    </Container>
   );
 }
 
 export default function App() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <SafeAreaView>
       <Component />
-    </View>
+    </SafeAreaView>
   );
 }

@@ -49,11 +49,11 @@ const InputWrapper = styled(View)`
   }
 
   & input {
-    border: unset;
-    margin: unset;
-    padding: unset;
-    outline: unset;
-    font-size: inherit;
+    /*border: unset;*/
+    /*margin: unset;*/
+    /*padding: unset;*/
+    /*outline: unset;*/
+    /*font-size: inherit;*/
 
     & {
       ${(props) =>
