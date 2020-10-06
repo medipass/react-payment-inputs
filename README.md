@@ -2,7 +2,7 @@
 
 [**React Native**](https://reactnative.dev)'s spiritual successor to [`react-payment-inputs`](https://github.com/medipass/react-payment-inputs). But **only in spirit**; the invocation signatures are fairly different.
 
-[`react-native-payment-inputs](https://github.com/cawfree/react-native-payment-inputs) are a set of UI agnostic hooks to easily implement the functionality of formatting and validating debit and credit card input fields.
+[`react-native-payment-inputs`](https://github.com/cawfree/react-native-payment-inputs) are a set of UI agnostic hooks to easily implement the functionality of formatting and validating debit and credit card input fields.
 
 ## 🚀 Installing
 
