@@ -1,4 +1,3 @@
-export { default as usePaymentInputs } from "./usePaymentInputs";
-export { default as PaymentInputsContainer } from "./PaymentInputsContainer";
-export { default as PaymentInputsWrapper } from "./PaymentInputsWrapper";
-export { default as images } from "./images";
+export {default as utils} from "./utils";
+export {default as images} from "./images";
+export {usePaymentInputs} from "./hooks";
