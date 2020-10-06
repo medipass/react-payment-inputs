@@ -1,0 +1,41 @@
+{
+  "scripts": {
+    "build": "yarn ; babel src --out-dir dist ; rm -rf node_modules"
+  },
+  "keywords": [
+    "react-native",
+    "react",
+    "react-payment-inputs",
+    "card",
+    "credit",
+    "debit",
+    "form"
+  ],
+  "peerDependencies": {
+    "prop-types": "^15.7.2",
+    "react-native": "^0.63.3",
+    "react-native-svg": "^12.1.0"
+  },
+  "dependencies": {
+    "type-check": "^0.4.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-react": "^7.10.4",
+    "husky": "^4.3.0",
+    "jest": "^26.5.2",
+    "leasot": "^11.3.0",
+    "prettier": "^2.1.2"
+  },
+  "name": "react-native-payment-inputs",
+  "version": "0.1.0-alpha.0",
+  "description": "A React Hook to help with payment card input fields.",
+  "main": "dist",
+  "repository": "https://github.com/cawfree/react-native-payment-inputs",
+  "author": "Alex Thomas (@cawfree) <hello@cawfree.com>",
+  "license": "MIT",
+  "private": false
+}

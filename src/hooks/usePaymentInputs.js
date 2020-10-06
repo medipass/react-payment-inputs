@@ -2,6 +2,7 @@ import {useRef, useCallback, useState} from "react";
 import {typeCheck} from "type-check";
 
 import utils from "../utils";
+import defaultImages from "../images";
 import {useOnce} from ".";
 
 const {formatter: {
@@ -26,7 +27,7 @@ const throwOnBadProps = ({onChangeText, value}) => {
   }
 };
 
-export default function usePaymentInputs({images} = {}) {
+export default function usePaymentInputs({images} = {images: defaultImages}) {
 
   const cardNumberRef = useRef();
   const expiryRef = useRef();

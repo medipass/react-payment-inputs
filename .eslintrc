@@ -1,6 +1,0 @@
-{
-	"extends": "@medipass/react-medipass",
-	"rules": {
-		"react/prop-types": "off"
-	}
-}
