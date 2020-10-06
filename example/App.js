@@ -14,7 +14,7 @@ export default function App() {
     getExpiryProps,
     getCvcProps,
     meta,
-  } = usePaymentInputs({images});
+  } = usePaymentInputs();
   return (
     <View style={StyleSheet.absoluteFill}>
       <SafeAreaView>
