@@ -111,6 +111,18 @@ export const CARD_TYPES = [
     }
   },
   {
+    displayName: 'Mir',
+    type: 'mir',
+    format: DEFAULT_CARD_FORMAT,
+    startPattern: /^(220[0-4])/,
+    gaps: [4, 8, 12],
+    lengths: [16, 17, 18, 19],
+    code: {
+      name: 'CVP2',
+      length: 3
+    }
+  },
+  {
     displayName: 'Hipercard',
     type: 'hipercard',
     format: DEFAULT_CARD_FORMAT,
