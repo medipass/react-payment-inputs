@@ -156,7 +156,7 @@ export default function usePaymentCard({
       id: 'cardNumber',
       name: 'cardNumber',
       placeholder: 'Card number',
-      type: 'tel',
+      type: props.type || 'tel',
       [refKey || 'ref']: cardNumberField,
       ...props,
       onBlur: handleBlurCardNumber(props),
