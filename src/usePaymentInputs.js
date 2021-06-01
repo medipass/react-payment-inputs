@@ -142,7 +142,7 @@ export default function usePaymentCard({
         if (!utils.validator.isNumeric(e)) {
           e.preventDefault();
         }
-        if (utils.validator.hasCardNumberReachedMaxLength(cardNumber)) {
+        if (utils.validator.hasCardNumberReachedMaxLength(cardNumber) && e.target.selectionStart === e.target.selectionEnd) {
           e.preventDefault();
         }
       }
@@ -234,7 +234,7 @@ export default function usePaymentCard({
         if (!utils.validator.isNumeric(e)) {
           e.preventDefault();
         }
-        if (expiryDate.length >= 4) {
+        if (expiryDate.length >= 4 && e.target.selectionStart === e.target.selectionEnd) {
           e.preventDefault();
         }
       }
@@ -332,10 +332,10 @@ export default function usePaymentCard({
         if (!utils.validator.isNumeric(e)) {
           e.preventDefault();
         }
-        if (cardType && cvc.length >= cardType.code.length) {
+        if (cardType && cvc.length >= cardType.code.length && e.target.selectionStart === e.target.selectionEnd) {
           e.preventDefault();
         }
-        if (cvc.length >= 4) {
+        if (cvc.length >= 4 && e.target.selectionStart === e.target.selectionEnd) {
           e.preventDefault();
         }
       }
