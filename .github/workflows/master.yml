@@ -1,0 +1,39 @@
+name: Git Secrets Scanner
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout repository on branch: ${{ github.REF }}'
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.HEAD_REF }}
+
+      - name: Retrieve entire repository history
+        run: |
+          git fetch --prune --unshallow
+      - uses: actions/checkout@master
+        with:
+          repository: awslabs/git-secrets
+          path: ./git-secrets
+      - name: Installing Git Secrets
+        run: |
+            ls -al
+            cd git-secrets
+            ls -al
+            sudo make install
+            git secrets
+            git secrets --install
+      - name: Finding Secrets in Git Repo
+        run: |  
+            ls -al
+            git secrets --register-aws --global
+            git secrets --scan
