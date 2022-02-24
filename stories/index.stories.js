@@ -271,23 +271,31 @@ storiesOf('usePaymentInputs', module)
     function Component() {
       const {
         meta,
+        helpers,
         getCardImageProps,
         getCardNumberProps,
         getExpiryDateProps,
         getCVCProps,
+        getZIPProps,
         wrapperProps
-      } = usePaymentInputs();
+      } = usePaymentInputs({
+        touchFormOnBlur: true
+      });
 
       return (
         <Formik
           initialValues={{
             cardNumber: '',
             expiryDate: '',
-            cvc: ''
+            cvc: '',
+            zip: ''
           }}
-          onSubmit={data => console.log(data)}
+          onSubmit={data => {
+            console.log(data)
+          }}
           validate={() => {
             let errors = {};
+
             if (meta.erroredInputs.cardNumber) {
               errors.cardNumber = meta.erroredInputs.cardNumber;
             }
@@ -297,31 +305,78 @@ storiesOf('usePaymentInputs', module)
             if (meta.erroredInputs.cvc) {
               errors.cvc = meta.erroredInputs.cvc;
             }
+
             return errors;
           }}
+          onReset={(values, formikbag) => {
+            
+          }}
         >
-          {({ handleSubmit }) => (
-            <form onSubmit={handleSubmit}>
+          {(props) => (
+            <form onSubmit={props.handleSubmit}>
               <div>
                 <PaymentInputsWrapper {...wrapperProps}>
                   <svg {...getCardImageProps({ images })} />
                   <FormikField name="cardNumber">
-                    {({ field }) => (
-                      <input {...getCardNumberProps({ onBlur: field.onBlur, onChange: field.onChange })} />
+                    {({ field, form, meta }) => (
+                      <input {...getCardNumberProps({
+                          onBlur: field.onBlur,
+                          onChange: field.onChange,
+                          value: form.values.cardNumber
+                        })}
+                        
+                      />
                     )}
                   </FormikField>
                   <FormikField name="expiryDate">
-                    {({ field }) => (
-                      <input {...getExpiryDateProps({ onBlur: field.onBlur, onChange: field.onChange })} />
+                    {({ field, form, meta }) => (
+                      <input {...getExpiryDateProps({
+                          onBlur: field.onBlur,
+                          onChange: field.onChange,
+                          value: form.values.expiryDate
+                        })}
+                      />
                     )}
                   </FormikField>
                   <FormikField name="cvc">
-                    {({ field }) => <input {...getCVCProps({ onBlur: field.onBlur, onChange: field.onChange })} />}
+                    {({ field, form, meta }) => (
+                      <input {...getCVCProps({
+                          onBlur:field.onBlur,
+                          onChange: field.onChange,
+                          value: form.values.cvc
+                        })}
+                      />
+                    )}
+                  </FormikField>
+                  <FormikField name="zip">
+                    {({ field, form, meta }) => (
+                      <input {...getZIPProps({
+                          onBlur:field.onBlur,
+                          onChange: field.onChange,
+                          value: form.values.zip
+                        })}
+                      />
+                    )}
                   </FormikField>
                 </PaymentInputsWrapper>
               </div>
-              <Button marginTop="major-2" type="submit">
+              <br/>
+
+              <Button margin="major-2" type="submit" onClick={(e) => { 
+                  helpers.setInputTouched('cardNumber', true);
+                  helpers.setInputTouched('expiryDate', true);
+                  helpers.setInputTouched('cvc', true);
+
+                  props.handleSubmit(e)
+                }}
+              >
                 Submit
+              </Button>
+              <Button margin="major-2" onClick={(e) => {
+                helpers.resetForm({...props.initialValues});
+                props.handleReset(e);
+              }} type='reset'>
+                Reset
               </Button>
             </form>
           )}
