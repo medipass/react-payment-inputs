@@ -656,16 +656,16 @@ function PaymentForm() {
               <svg {...getCardImageProps({ images })} />
               <Field name="cardNumber">
                 {({ field }) => (
-                  <input {...getCardNumberProps({ onBlur: field.onBlur, onChange: field.onChange })} />
+                  <input {...getCardNumberProps({ onBlur: field.onBlur, onChange: field.onChange, value: field.value })} />
                 )}
               </Field>
               <Field name="expiryDate">
                 {({ field }) => (
-                  <input {...getExpiryDateProps({ onBlur: field.onBlur, onChange: field.onChange })} />
+                  <input {...getExpiryDateProps({ onBlur: field.onBlur, onChange: field.onChange, value: field.value })} />
                 )}
               </Field>
               <Field name="cvc">
-                {({ field }) => <input {...getCVCProps({ onBlur: field.onBlur, onChange: field.onChange })} />}
+                {({ field }) => <input {...getCVCProps({ onBlur: field.onBlur, onChange: field.onChange, value: field.value })} />}
               </Field>
             </PaymentInputsWrapper>
           </div>
