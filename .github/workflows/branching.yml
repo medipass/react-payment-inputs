@@ -1,0 +1,132 @@
+name: Check Branch Name and Verify JIRA ID on JIRA Board
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, closed]
+
+jobs:
+  run-script:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Extract base branch name
+        shell: bash
+        run: echo "branch=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: base_branch
+      - name: Base branch
+        run: |
+          echo ${{ steps.base_branch.outputs.branch }}
+      
+      - name: Extract source branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+
+      - uses: winterjung/split@v2
+        id: split
+        with:
+          msg: ${{ steps.extract_branch.outputs.branch }}
+          separator: '-'
+          maxsplit: 1
+          
+      - name: Action PR title
+        if: ${{ (steps.split.outputs._0 == 'feature') || (steps.split.outputs._0 == 'hotfix') }}
+        uses: deepakputhraya/action-pr-title@master
+        with:
+          regex: '\w+\-\w+\-\d+' # Regex the title should match.
+          allowed_prefixes: '' # title should start with the given prefix
+          disallowed_prefixes: '' # title should not start with the given prefix
+          prefix_case_sensitive: true # title prefix are case insensitive
+          min_length: 5 # Min length of the title
+          max_length: 200 # Max length of the title
+          github_token: ${{ github.token }} # Default: ${{ github.token }}
+
+      - name: Branch matcher
+        if: github.event.pull_request.merged != true
+        run: |
+          if [ "${{ steps.base_branch.outputs.branch }}" == "${{ github.event.repository.default_branch }}" ]
+          then
+            if [ "${{ steps.split.outputs._0 }}" == 'release' ] || [ "${{ steps.split.outputs._0 }}" == 'hotfix' ]
+            then
+              echo "This pull request targets the default branch branching strategy."
+            else
+              echo "Please check your default branch branching strategy again!"
+              exit 1
+            fi
+          elif [[ "${{ steps.base_branch.outputs.branch }}" == release ]]
+          then
+            if [ ${{ steps.split.outputs._0 }} == 'feature' ] || [ ${{ steps.split.outputs._0 }} == "${{ github.event.repository.default_branch }}" ] 
+            then
+              echo "This pull request targets the Release branching strategy."
+            else
+              echo "Please check your Release branch branching strategy again!"
+              exit 1
+            fi
+          else 
+            echo "NO conditions matched please check again!!"
+            exit 1
+          fi
+      - name: Verify JIRA ID on JIRA Board
+        if: ${{ (steps.split.outputs._0 == 'feature') || (steps.split.outputs._0 == 'hotfix') }} 
+        id: verify-jira-id
+        run: |
+          jira_id="${{ steps.split.outputs._1 }}"
+          jira_url="https://bharatpe.atlassian.net/rest/api/2/issue/$jira_id"
+          # Replace 'your-jira-username' and 'your-jira-api-token' with your Jira credentials
+          curl -u ${{ secrets.JIRA_USERNAME }}:${{ secrets.JIRA_TOKEN }} -X GET -H "Content-Type: application/json" $jira_url | grep -q 'id' && echo "JIRA ID $jira_id exists on the JIRA board" || (echo "JIRA ID $jira_id does not exist on the JIRA board" && exit 1)
+      - name: Add tag in default branch
+        if: ${{ steps.base_branch.outputs.branch == github.event.repository.default_branch && github.event.pull_request.merged == true }}
+        run: |
+          echo "Tagging The following Repo"
+          # Fetch latest semantic versioning tag
+          latest_semantic_tag=$(curl -s -H "Authorization: token ${{ secrets.github_token }}" "https://api.github.com/repos/bharatpe/${{ github.event.repository.name }}/tags" | jq -r '.[].name | select(test("^v[0-9]+\\.[0-9]+\\.[0-9]+$"))' | sort -V | tail -1)
+
+          # If no semantic versioning tags are found, fallback to non-semantic versioning tags
+          if [ -z "$latest_semantic_tag" ]; then
+              latest_non_semantic_tag=$(curl -s -H "Authorization: token ${{ secrets.github_token }}" "https://api.github.com/repos/bharatpe/${{ github.event.repository.name }}/tags" | jq -r '.[].name | select(test("^v[0-9]+$"))' | sort -V | tail -1)
+              latest_tag=$latest_non_semantic_tag
+          else
+              latest_tag=$latest_semantic_tag
+          fi
+          current_version="$latest_tag"
+          echo "Current version: $current_version"
+          IFS='.' read -r -a version_parts <<< "$current_version"
+
+          commit_messages=$(git log -n 3)
+          commit_messagesTrim=$(echo "$commit_messages" | head -c 500)
+          git config --global user.email "deployer@bharatpe.com"
+          git config --global user.name "deployerbharatpe"
+          pattern="^v[0-9]+\.[0-9]+\.[0-9]+$"
+          if [ -z "$current_version" ] || ! [[ "$current_version" =~ $pattern ]]; then
+            echo "This Repo Has Not Been Tagged Yet Starting Tagging The Following Repo"
+            git tag -a v0.1.0 -m "$commit_messagesTrim"
+            git push  origin v0.1.0
+          else
+            x=${version_parts[0]}
+            y=${version_parts[1]}
+            z=${version_parts[2]}
+            echo "$x"
+            echo "$y"
+            echo "$z"
+            if [[ "${{ steps.split.outputs._0 }}" == 'hotfix' ]]; then
+              z=$((z+1))
+            elif [ "$y" -lt 9 ]; then
+              
+              y=$((y+1))
+              z=0
+            else
+              
+              x=$((x+1))
+              y=0
+            fi
+            # Create the new tag
+            new_version="$x.$y.$z"
+            echo  "$new_version"
+            echo "This Repo is already Tagging, Old_Tag : $current_tag Incrementing it to New_Tag : $new_version"
+            git tag -a $new_version -m "$commit_messagesTrim"
+            git push origin $new_version
+          fi
