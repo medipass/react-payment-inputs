@@ -121,6 +121,18 @@ export const CARD_TYPES = [
       name: 'CVC',
       length: 3
     }
+  },
+  {
+    displayName: 'Troy',
+    type: 'troy',
+    format: DEFAULT_CARD_FORMAT,
+    startPattern: /^9792/,
+    gaps: [4, 8, 12],
+    lengths: [16],
+    code: {
+      name: 'CVV',
+      length: 3
+    }
   }
 ];
 
