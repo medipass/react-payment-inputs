@@ -418,7 +418,7 @@ export default function usePaymentCard({
       props.onKeyPress && props.onKeyPress(e);
 
       if (e.key !== utils.ENTER_KEY_CODE) {
-        if (!utils.validator.isNumeric(e)) {
+        if (!props.allowCanada && !utils.validator.isNumeric(e)) {
           e.preventDefault();
         }
       }
@@ -432,7 +432,7 @@ export default function usePaymentCard({
       maxLength: '6',
       name: 'zip',
       placeholder: 'ZIP',
-      type: 'tel',
+      type: props.allowCanada ? 'text' : 'tel',
       [refKey || 'ref']: zipField,
       ...props,
       onBlur: handleBlurZIP(props),

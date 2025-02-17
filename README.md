@@ -327,6 +327,8 @@ Returns the props to apply to the **CVC** input.
 
 Returns the props to apply to the **ZIP** input.
 
+Pass `allowCanada` as prop to `getZIPProps` to allow for letters used in Canadian postal codes.
+
 **IMPORTANT:** You must place your event handlers (e.g. `onChange`, `onBlur`, etc) inside the `getZIPProps()` so the default event handlers in React Payment Inputs don't get overridden.
 
 ##### Example snippet
